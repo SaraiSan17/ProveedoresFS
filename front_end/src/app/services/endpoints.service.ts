@@ -210,11 +210,11 @@ export class EndpointsService {
     const params = JSON.stringify(data);
     const url = `${this.urlBaseDocumento}/register`;
     const formData = new FormData();
-    formData.append('data', JSON.stringify(data));
+    /*formData.append('data', JSON.stringify(data));
     formData.append('file', file, file.name);
     this.httpOptions.headers.append("Content-Disposition", "form-data; name=\"data\"");
-    this.httpOptions.headers.append("Content-Disposition", "form-data; name=\"file\"");
-    return this.apiClient.post(url, formData);
+    this.httpOptions.headers.append("Content-Disposition", "form-data; name=\"file\"");*/
+    return this.apiClient.post(url, params, this.httpOptions);
   }
 
   updateDocumento(id: number,data: {}):Observable<any>{

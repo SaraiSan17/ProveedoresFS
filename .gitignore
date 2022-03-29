@@ -1,5 +1,7 @@
 /front_end/node_modules
 /backend_mysql/node_modules
+/front_end/.vscode
+/backend_mysql/.vscode
 
 *.zip
 *.mwb.bak

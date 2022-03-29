@@ -25,10 +25,10 @@ export class DocumentacionComponent implements OnInit {
   dialogTemplate!: TemplateRef<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  columnsToDisplay: string[] = ["ot", "proyecto","cliente","proveedor","actions"];
+  columnsToDisplay: string[] = ["proyecto","cliente","proveedor", "comentario","actions"];
   public ASIGNACION_DATA: ASIGNACION[] = [];
   allData = new MatTableDataSource<ASIGNACION>(this.ASIGNACION_DATA);
-  public newDoc = {id : 0,ot: "", proyecto: 0, cliente:0, proveedor: 0};
+  public newDoc = {id : 0,comentario: "", proyecto: 0, cliente:0, formato: 0};
   fileName:any = null;
   fileToUpload:File =null;
   
@@ -102,10 +102,6 @@ export class DocumentacionComponent implements OnInit {
   addDoc(){
     if(this.formDoc.valid){
       
-      this.newDoc.ot = this.formDoc.value.ot
-      this.newDoc.proyecto = this.formDoc.value.proyecto
-      this.newDoc.cliente = this.formDoc.value.cliente
-      this.newDoc.proveedor = this.formDoc.value.proveedor
       const formData = new FormData();
       formData.append('archivo', this.formDoc.get('archivo').value);
       formData.append('proyecto_id', this.formDoc.get('proyecto').value);
@@ -147,25 +143,25 @@ export class DocumentacionComponent implements OnInit {
       const file = event.target.files[0];
       this.fileName = file.name;
       this.fileToUpload = file;
-      //this.formDoc.get('archivo').setValue(file.name);
     }
   }
 
   updateDoc(){
     delete this.docToShow.createdAt;
     delete this.docToShow.updatedAt; 
+    console.log("sdf",this.docToShow)
     this.edp.updateDocumento(this.docToShow.id,{
-      ot: this.docToShow.ot,
-      proyecto_id: this.docToShow.proyecto,
-      cliente_id: this.docToShow.cliente,
-      users_id: this.docToShow.proveedor
+      proyecto_id:this.docToShow.proyecto,
+      formato_id:this.docToShow.formato,
+      cliente_id:this.docToShow.cliente,
+      comentarios:this.docToShow.comentario,
     }).subscribe(
       update => {
         console.log("update",update)
         this.listDocs();
       },
       notUpdate => {
-        console.log(notUpdate)
+        console.log(notUpdate);
       }
     )
   }
@@ -182,7 +178,11 @@ export class DocumentacionComponent implements OnInit {
     
     this.edp.getDocumento(row_obj.id).subscribe(
       doc => {
-        this.docToShow = doc;
+        this.docToShow.id = doc.id;
+        this.docToShow.proyecto = doc.proyecto_id;
+        this.docToShow.formato = doc.formato_id;
+        this.docToShow.cliente = doc.cliente_id;
+        this.docToShow.comentario = doc.comentarios ;
         console.log(12,this.docToShow)
         this.open({
           width: '400px',
@@ -236,12 +236,12 @@ export class DocumentacionComponent implements OnInit {
           info = "Cargando información"
         }
         break;
-      case "u":
+      case "f":
         if(this.forms.length > 0){
           let data = this.forms.filter((v:any) =>{
             return v.id == id;
           })
-          info = data[0].razon_social;
+          info = data[0].nombre;
         }else {
           info = "Cargando información"
         }

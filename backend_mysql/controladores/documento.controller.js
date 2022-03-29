@@ -9,7 +9,7 @@ const authorize = require('_middleware/authorize')
 const documentoService = require('../servicios/documento.service');
 
 // routes
-router.post('/register', authorize(),  register);
+router.post('/register', authorize(), registerSchema, register);
 router.get('/', authorize(), getAll);
 router.get('/:id', authorize(), getById);
 router.put('/:id', authorize(), updateSchema, update);
@@ -23,6 +23,7 @@ function registerSchema(req, res, next) {
         formato_id: Joi.number().required(),
         cliente_id: Joi.number().required(),
         comentarios: Joi.string().required(),
+        archivo: Joi.string().required()
     });
     validateRequest(req, next, schema);
 }
@@ -30,10 +31,8 @@ function registerSchema(req, res, next) {
 function register(req, res, next) {
     
     console.log("tyoe",req.get('Content-Type'));
-    console.log("BODY",req.formData);
+    console.log("BODY",req.body);
 
-    
-    return;
     documentoService.create(req.body)
         .then(() => res.json({ message: 'Registro exitoso' }))
         .catch(next);
@@ -56,7 +55,8 @@ function updateSchema(req, res, next) {
         proyecto_id: Joi.number(),
         formato_id: Joi.number(),
         cliente_id: Joi.number(),
-        comentarios: Joi.string().empty('')
+        comentarios: Joi.string().empty(''),
+        archivo: Joi.string().empty('')
     });
     validateRequest(req, next, schema);
 }

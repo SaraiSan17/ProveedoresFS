@@ -98,12 +98,7 @@
       </div>
       <div class="center-text mat-elevation-z8">
         <table mat-table #table [dataSource]="allData" style="width: 100%;">
-          <ng-container matColumnDef="ot">
-            <mat-header-cell *matHeaderCellDef>OT</mat-header-cell>
-            <mat-cell *matCellDef="let asignacion">
-              <div> {{asignacion.ot}} </div>
-            </mat-cell>
-          </ng-container>
+         
           <ng-container matColumnDef="proyecto">
             <mat-header-cell *matHeaderCellDef>Proyecto</mat-header-cell>
             <mat-cell *matCellDef="let asignacion">
@@ -117,16 +112,23 @@
             </mat-cell>
           </ng-container>
           <ng-container matColumnDef="proveedor">
-            <mat-header-cell *matHeaderCellDef>Proveedor</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef>Formato</mat-header-cell>
             <mat-cell *matCellDef="let asignacion">
-              <div> {{getInfo('u',asignacion.users_id)}} </div>
+              <div> {{getInfo('f',asignacion.formato_id)}} </div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="comentario">
+            <mat-header-cell *matHeaderCellDef>Comentario</mat-header-cell>
+            <mat-cell *matCellDef="let asignacion">
+              <div> {{asignacion.comentarios}} </div>
             </mat-cell>
           </ng-container>
           <ng-container matColumnDef="actions">
             <mat-header-cell *matHeaderCellDef>Actions </mat-header-cell>
             <mat-cell *matCellDef="let asignacion">
-              <button mat-button color="primary" (click)="openDialog(this.asignacion)">Edit</button> |
-              <button mat-button color="warn" (click)="delete(this.asignacion)">Delete</button>
+              <button mat-button color="primary" (click)="openDialog(this.asignacion)"><mat-icon>update</mat-icon></button> |
+              <button mat-button color="warn" (click)="delete(this.asignacion)"><mat-icon>delete_forever</mat-icon></button> |
+              <mat-icon>cloud_download</mat-icon>
             </mat-cell>
           </ng-container>
           <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
@@ -143,15 +145,9 @@
     <h2 matDialogTitle>Editando Asignación </h2>
     <mat-dialog-content>
   
-  
-      <mat-form-field appearance="fill" class="full-width-field">
-        <mat-label>OT:</mat-label>
-        <input matInput [(ngModel)]="docToShow.ot">
-      </mat-form-field>
-  
       <mat-form-field appearance="fill" class="full-width-field">
         <mat-label>Proyecto</mat-label>
-        <mat-select [(ngModel)]="docToShow.proyecto_id" class="form-control" required>
+        <mat-select [(ngModel)]="docToShow.proyecto" class="form-control" required>
           <mat-option *ngFor="let proy of proys" [value]="proy.id">
             {{proy.clave}} {{proy.cliente}}
           </mat-option>
@@ -160,22 +156,22 @@
   
       <mat-form-field appearance="fill" class="full-width-field">
         <mat-label>Cliente:</mat-label>
-        <mat-select [(ngModel)]="docToShow.cliente_id" class="form-control" required>
+        <mat-select [(ngModel)]="docToShow.cliente" class="form-control" required>
           <mat-option *ngFor="let cli of clients" [value]="cli.id">
             {{cli.razon_social}}
           </mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field appearance="fill" class="full-width-field">
-        <mat-label>Proveedor:</mat-label>
-        <mat-select [(ngModel)]="docToShow.users_id" class="form-control" required>
+        <mat-label>formato:</mat-label>
+        <mat-select [(ngModel)]="docToShow.formato" class="form-control" required>
           <mat-option *ngFor="let prov of forms" [value]="prov.id">
             {{prov.nombre}}
           </mat-option>
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="fill" class="full-width-field">
         <mat-label>Comentario</mat-label>
         <textarea matInput [(ngModel)]="docToShow.comentario"></textarea>
       </mat-form-field>

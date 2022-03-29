@@ -27,7 +27,6 @@ async function update(id, params) {
     // copy params to documento and save
     Object.assign(documento, params);
     await documento.save();
-
     return documento.get();
 }
 
