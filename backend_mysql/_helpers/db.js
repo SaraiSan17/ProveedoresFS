@@ -25,6 +25,7 @@ async function initialize() {
     db.Asignacion = require('../modelos/asignacion.model')(sequelize);
     db.Formato = require('../modelos/formato.model')(sequelize);
     db.Documento = require('../modelos/documento.model')(sequelize);
+    db.Requisicion = require('../modelos/requisicion.model')(sequelize);
     // sync all models with database
     await sequelize.sync();
 

@@ -18,7 +18,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { FacturacionComponent } from './facturacion/facturacion.component';
 import { CotizacionComponent } from './cotizacion/cotizacion.component';
-import { RequisisionComponent } from './requisision/requisision.component';
+import { RequisicionComponent } from './requisicion/requisicion.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {MatExpansionModule} from '@angular/material/expansion';
@@ -39,6 +39,9 @@ import { JwtTokenInterceptor } from './services/client.service';
 import {MatDialogModule} from '@angular/material/dialog';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { DocumentacionComponent } from './documentacion/documentacion.component';
+import { AddComponent } from './Requisicion/add/add.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -47,7 +50,7 @@ import { DocumentacionComponent } from './documentacion/documentacion.component'
     LoginFormComponent,
     FacturacionComponent,
     CotizacionComponent,
-    RequisisionComponent,
+    RequisicionComponent,
     ClienteComponent,
     ProveedorComponent,
     ProyectoComponent,
@@ -57,7 +60,8 @@ import { DocumentacionComponent } from './documentacion/documentacion.component'
     AsignacionComponent,
     EstatusComponent,
     HomeComponent,
-    DocumentacionComponent
+    DocumentacionComponent,
+    AddComponent
   ],
   imports: [
     BrowserModule,
@@ -82,10 +86,13 @@ import { DocumentacionComponent } from './documentacion/documentacion.component'
     MatTableModule,
     MatSelectModule,
     MatDialogModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JwtTokenInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: JwtTokenInterceptor, multi: true },
+    MatDatepickerModule
   ],
   bootstrap: [AppComponent]
 })

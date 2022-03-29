@@ -17,6 +17,7 @@ export class EndpointsService {
   private urlBaseAsignacion = this.BaseURI + '/asignacion';
   private urlBaseFormato = this.BaseURI + '/formato';
   private urlBaseDocumento = this.BaseURI + '/documento';
+  private urlBaseRequisicion = this.BaseURI + '/requisicion';
 
   private httpOptions = {
     headers: new HttpHeaders({
@@ -194,7 +195,7 @@ export class EndpointsService {
   }
   //termina endpoints para formato
   
-  //inicia endpoitns para documento
+  //inicia endpoitns para docuento
   listDocumento(): Observable<any>{
     const url = `${this.urlBaseDocumento}`;
     return this.apiClient.get(url)
@@ -222,5 +223,30 @@ export class EndpointsService {
     const url = `${this.urlBaseDocumento}/${id}`;
     return this.apiClient.put(url,params, this.httpOptions)
   }
-  //termina endpoints para Docuemento
+  //termina endpoints para Documento
+
+  //inicia endpoitns para Requisicion
+  listRequisicion(): Observable<any>{
+    const url = `${this.urlBaseRequisicion}`;
+    return this.apiClient.get(url)
+  }
+
+  getRequisicion(id: any): Observable<any> {
+    const url = `${this.urlBaseRequisicion}/${id}`;
+
+    return this.apiClient.get(url);
+  }
+
+  createRequisicion(data: {}): Observable<any> {
+    const params = JSON.stringify(data);
+    const url = `${this.urlBaseRequisicion}/register`;
+    return this.apiClient.post(url, params, this.httpOptions);
+  }
+
+  updateRequisicion(id: number,data: {}):Observable<any>{
+    const params = JSON.stringify(data);
+    const url = `${this.urlBaseRequisicion}/${id}`;
+    return this.apiClient.put(url,params, this.httpOptions)
+  }
+  //termina endpoints para Requisicion
 }

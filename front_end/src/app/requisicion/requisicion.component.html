@@ -1,0 +1,108 @@
+  
+  <mat-card>
+    <mat-card-content>
+      <div>
+        <mat-toolbar>
+          <h3>Reqesicion</h3>
+          <span class="spacer"></span>
+          <a mat-list-item routerLink="/requisicion/agregar" >
+            <mat-icon>note_add</mat-icon>
+          </a>
+        </mat-toolbar>
+      </div>
+      <div class="center-text mat-elevation-z8">
+        <table mat-table #table [dataSource]="allData" style="width: 100%;">
+         
+          <ng-container matColumnDef="proyecto">
+            <mat-header-cell *matHeaderCellDef>Proyecto</mat-header-cell>
+            <mat-cell *matCellDef="let asignacion">
+              <div> {{getInfo('p',asignacion.proyecto_id)}} </div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="cliente">
+            <mat-header-cell *matHeaderCellDef>Cliente</mat-header-cell>
+            <mat-cell *matCellDef="let asignacion">
+              <div> {{getInfo('c',asignacion.cliente_id)}} </div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="proveedor">
+            <mat-header-cell *matHeaderCellDef>Formato</mat-header-cell>
+            <mat-cell *matCellDef="let asignacion">
+              <div> {{getInfo('f',asignacion.formato_id)}} </div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="comentario">
+            <mat-header-cell *matHeaderCellDef>Comentario</mat-header-cell>
+            <mat-cell *matCellDef="let asignacion">
+              <div> {{asignacion.comentarios}} </div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef>Actions </mat-header-cell>
+            <mat-cell *matCellDef="let asignacion">
+              <button mat-button color="primary" (click)="openDialog(this.asignacion)"><mat-icon>update</mat-icon></button> |
+              <button mat-button color="warn" (click)="delete(this.asignacion)"><mat-icon>delete_forever</mat-icon></button> |
+              <mat-icon>cloud_download</mat-icon>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+          <mat-row *matRowDef="let dataSource; columns: columnsToDisplay;"></mat-row>
+  
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      </div>
+  
+    </mat-card-content>
+  </mat-card>
+  
+  <ng-template #callAPIDialog>
+    <h2 matDialogTitle>Editando Asignación </h2>
+    <mat-dialog-content>
+  
+      <mat-form-field appearance="fill" class="full-width-field">
+        <mat-label>Proyecto</mat-label>
+        <mat-select [(ngModel)]="reqToShow.proyecto" class="form-control" required>
+          <mat-option *ngFor="let proy of proys" [value]="proy.id">
+            {{proy.clave}} {{proy.cliente}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="full-width-field">
+        <mat-label>Cliente:</mat-label>
+        <mat-select [(ngModel)]="reqToShow.cliente" class="form-control" required>
+          <mat-option *ngFor="let cli of clients" [value]="cli.id">
+            {{cli.razon_social}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="full-width-field">
+        <mat-label>formato:</mat-label>
+        <mat-select [(ngModel)]="reqToShow.formato" class="form-control" required>
+          <mat-option *ngFor="let prov of forms" [value]="prov.id">
+            {{prov.nombre}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width-field">
+        <mat-label>Comentario</mat-label>
+        <textarea matInput [(ngModel)]="reqToShow.comentario"></textarea>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="full-width-field">
+        <mat-label>Ultima modificación:</mat-label>
+        <input matInput value="{{reqToShow.updatedAt | date :'short'}}" disabled>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="full-width-field">
+        <mat-label>Proveedor creado:</mat-label>
+        <input matInput value="{{reqToShow.createdAt | date :'short'}}" disabled>
+      </mat-form-field>
+  
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button matDialogClose="no" (click)="afeterC('no')">No</button>
+      <button mat-button matDialogClose="yes" (click)="afeterC('yes')">Yes</button>
+    </mat-dialog-actions>
+  </ng-template>

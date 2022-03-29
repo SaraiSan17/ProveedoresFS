@@ -14,7 +14,8 @@ import { LoginFormComponent } from './login-form/login-form.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { AsignacionComponent } from './ot/asignacion/asignacion.component';
 import { MaterialComponent } from './ot/material/material.component';
-import { RequisisionComponent } from './requisision/requisision.component';
+import { AddComponent } from './Requisicion/add/add.component';
+import { RequisicionComponent } from './requisicion/requisicion.component';
 import { AuthGuard } from './services/auth.guard';
 
 const routes: Routes = [
@@ -51,9 +52,10 @@ const routes: Routes = [
       { path: '', component: DocumentacionComponent, canActivate: [AuthGuard] },
     ]
   },
-  { path: 'requisision', component: NavigationComponent, 
+  { path: 'requisicion', component: NavigationComponent, 
     children: [ 
-      { path: '', component: RequisisionComponent, canActivate: [AuthGuard] },
+      { path: '', component: RequisicionComponent, canActivate: [AuthGuard] },
+      { path: 'agregar', component: AddComponent, canActivate: [AuthGuard] },
     ]
   }
 ]

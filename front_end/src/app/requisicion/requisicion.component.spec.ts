@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RequisisionComponent } from './requisision.component';
+import { RequisicionComponent } from './requisicion.component';
 
-describe('RequisisionComponent', () => {
-  let component: RequisisionComponent;
-  let fixture: ComponentFixture<RequisisionComponent>;
+describe('RequisicionComponent', () => {
+  let component: RequisicionComponent;
+  let fixture: ComponentFixture<RequisicionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RequisisionComponent ]
+      declarations: [ RequisicionComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RequisisionComponent);
+    fixture = TestBed.createComponent(RequisicionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
