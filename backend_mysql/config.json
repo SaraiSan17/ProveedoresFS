@@ -1,0 +1,11 @@
+﻿{
+    "database": {
+        "host": "localhost",
+        "port": 3306,
+        "user": "root",
+        "password": "root",
+        "database": "proveedores_db"
+    },
+    "secret": "EwVDTwrFH90qYJN0LANvq3kWp",
+    "storage": "./_docs_upload/"
+}

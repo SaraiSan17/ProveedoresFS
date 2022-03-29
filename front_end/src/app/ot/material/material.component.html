@@ -1,0 +1,147 @@
+<mat-card>
+  <mat-card-content class="center-text">
+
+    <form [formGroup]="formMaterial" (ngSubmit)="addMaterial()">
+      <mat-grid-list cols="4" rowHeight="10px">
+        <mat-grid-tile rowspan="6"></mat-grid-tile>
+
+        <mat-grid-tile rowspan="6">
+          <mat-form-field class="full-width-field">
+            <input type="text" matInput placeholder="Clave" formControlName="clave">
+            <mat-error *ngIf="clave.invalid">{{getErrorMessage('clave')}}</mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
+
+
+
+        <mat-grid-tile rowspan="6">
+          
+            <mat-form-field class="full-width-field p-l-2">
+              <input type="number" matInput placeholder="Cantidad" formControlName="cantidad">
+              <mat-error *ngIf="cantidad.invalid">{{getErrorMessage('cantidad')}}</mat-error>
+            </mat-form-field>
+
+        </mat-grid-tile>
+        <mat-grid-tile rowspan="6"></mat-grid-tile>
+        <mat-grid-tile rowspan="6"></mat-grid-tile>
+        <mat-grid-tile rowspan="6">
+            <mat-form-field class="full-width-field ">
+              <input type="text" matInput placeholder="Unidad" formControlName="unidad">
+              <mat-error *ngIf="unidad.invalid">{{getErrorMessage('unidad')}}</mat-error>
+            </mat-form-field>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile rowspan="6">
+            <mat-form-field class="full-width-field p-l-2">
+              <input type="text" matInput placeholder="Descripción" formControlName="descripcion">
+              <mat-error *ngIf="descripcion.invalid">{{getErrorMessage('descripcion')}}</mat-error>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile rowspan="6" colspan="4">
+          <p>
+            <button mat-raised-button color="primary" type="submit">Agregar</button>
+          </p>
+        </mat-grid-tile>
+
+      </mat-grid-list>
+    </form>
+    <p *ngIf="gblMSG!=''">{{gblMSG}}</p>
+
+
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-content>
+    <div>
+      <label>
+        <h3>Materiales</h3>
+      </label>
+    </div>
+    <div class="center-text mat-elevation-z8">
+      <table mat-table #table [dataSource]="allData" style="width: 100%;">
+        <ng-container matColumnDef="clave">
+          <mat-header-cell *matHeaderCellDef>Clave</mat-header-cell>
+          <mat-cell *matCellDef="let material">
+            <div> {{material.clave}} </div>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="cantidad">
+          <mat-header-cell *matHeaderCellDef>Cantidad</mat-header-cell>
+          <mat-cell *matCellDef="let material">
+            <div> {{material.cantidad}} </div>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="unidad">
+          <mat-header-cell *matHeaderCellDef>Unidad</mat-header-cell>
+          <mat-cell *matCellDef="let material">
+            <div> {{material.unidad}} </div>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="descripcion">
+          <mat-header-cell *matHeaderCellDef>Descripción</mat-header-cell>
+          <mat-cell *matCellDef="let material">
+            <div> {{material.descripcion}} </div>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef>Actions </mat-header-cell>
+          <mat-cell *matCellDef="let material">
+            <button mat-button color="primary" (click)="openDialog(this.material)">Edit</button> |
+            <button mat-button color="warn" (click)="delete(this.material)">Delete</button>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+        <mat-row *matRowDef="let dataSource; columns: columnsToDisplay;"></mat-row>
+
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+
+  </mat-card-content>
+</mat-card>
+
+
+<ng-template #callAPIDialog>
+  <h2 matDialogTitle>Editando Proveedor </h2>
+  <mat-dialog-content>
+    
+   
+      <mat-form-field appearance="fill" class="full-width-field">
+        <mat-label>Clave:</mat-label>
+        <input matInput [(ngModel)]="matToShow.clave">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" class="full-width-field">
+        <mat-label>Cantidad:</mat-label>
+        <input matInput [(ngModel)]="matToShow.cantidad">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" class="full-width-field">
+        <mat-label>Unidad:</mat-label>
+        <input matInput [(ngModel)]="matToShow.unidad">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" class="full-width-field">
+      <mat-label>Dscripcion:</mat-label>
+        <input matInput  [(ngModel)]="matToShow.descripcion">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width-field">
+        <mat-label>Ultima modificación:</mat-label>
+        <input matInput value="{{matToShow.updatedAt | date :'short'}}" disabled>
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" class="full-width-field">
+        <mat-label>Proveedor creado:</mat-label>
+        <input matInput value="{{matToShow.createdAt | date :'short'}}" disabled> 
+      </mat-form-field>
+      
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+      <button mat-button matDialogClose="no" (click)="afeterC('no')">No</button>
+      <button mat-button matDialogClose="yes" (click)="afeterC('yes')">Yes</button>
+  </mat-dialog-actions>
+</ng-template>

@@ -1,0 +1,89 @@
+<mat-card>
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <p class="center-text">
+        <img src="/assets/images/logo.png" alt="logo" height="200em" width="auto">
+      </p>
+      <h2 *ngIf="haveGblMessage">{{ gblMessage }}</h2>
+      <p>
+        <mat-form-field>
+          <input type="text" matInput placeholder="RFC" formControlName="rfc">
+          <mat-error *ngIf="rfc.invalid">{{getErrorMessage('rfc')}}</mat-error>
+        </mat-form-field>
+      </p>
+
+      <p>
+        <mat-form-field>
+          <input type="password" matInput placeholder="Password" formControlName="password">
+          <mat-error *ngIf="password.invalid">{{getErrorMessage('pwd')}}</mat-error>
+        </mat-form-field>
+      </p>
+
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+        <label class="form-check-label" for="defaultCheck1">
+          Remember me
+        </label>
+      </div>
+
+      <div class="button">
+        <button type="submit" mat-button>Login</button>
+      </div>
+
+    </form>
+
+
+
+  </mat-card-content>
+</mat-card>
+
+<mat-card fxLayout="row">
+  <mat-card-content>
+    <img mat-card-image
+      src="https://www.elfinancierocr.com/resizer/LuKd73p1m4rWSFeDJ7-1voYSlEk=/1440x0/filters:format(jpg):quality(70)/cloudfront-us-east-1.images.arcpublishing.com/gruponacion/YYQA7H3NP5CELDXIHC2N2R5OZI.jpg"
+      alt="logo" height="200em" width="auto">
+
+  </mat-card-content>
+</mat-card>
+
+
+<!--mat-grid-list cols="2" rowHeight="100px" >
+      <mat-grid-tile colspan="1" rowspan="1">
+         <img  src="/assets/images/logo.png" alt="logo" height="200em" width="auto">
+      </mat-grid-tile >
+      <mat-grid-tile colspan="2" rowspan="1">
+        <form [formGroup]="form" (ngSubmit)="submit()">
+          <p>
+            <mat-form-field>
+              <input type="text" matInput placeholder="RFC" formControlName="rfc">
+              <mat-error *ngIf="rfc.invalid">{{getErrorMessage('rfc')}}</mat-error>
+            </mat-form-field>
+          </p>
+    
+          <p>
+            <mat-form-field>
+              <input type="password" matInput placeholder="Password" formControlName="password">
+              <mat-error *ngIf="password.invalid">{{getErrorMessage('pwd')}}</mat-error>
+            </mat-form-field>
+          </p>
+          
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+              <label class="form-check-label" for="defaultCheck1">
+                Remember me
+              </label>
+            </div>
+    
+          <div class="button">
+            <button type="submit" mat-button>Login</button>
+          </div>
+    
+        </form>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="2" rowspan="2">
+          imagen de la izquierda
+      </mat-grid-tile>
+
+
+
+    </mat-grid-list-->

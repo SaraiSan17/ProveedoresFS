@@ -1,0 +1,81 @@
+<mat-sidenav-container class="sidenav-container" autozise>
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      
+      [mode]="'push'"
+      [opened]="(isHandset$ | async) === true"
+      (opened)="iconMenu='chevron_left'"
+      (closed)="iconMenu='chevron_right'">
+    <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/home" routerLinkActive="active">Home</a>
+      <mat-accordion>
+        <mat-expansion-panel class="matepb">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Alta
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <a class="submenu" mat-list-item routerLink="/alta/cliente" routerLinkActive="active">Clientes</a>
+          <a mat-list-item routerLink="/alta/proyecto" routerLinkActive="active">Proyecto</a>
+          <a mat-list-item routerLink="/alta/proveedor" routerLinkActive="active">Proveedor</a>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              OT
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <a mat-list-item routerLink="/ot/material" routerLinkActive="active">Alta Material</a>
+          <a mat-list-item routerLink="/ot/asignacion" routerLinkActive="active">Asignación</a>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Facturación
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <a mat-list-item routerLink="/facturacion/agregar" routerLinkActive="active">Agregar Factura</a>
+          <a mat-list-item routerLink="/facturacion/consultar" routerLinkActive="active">Consultar Facturas</a>
+          <a mat-list-item routerLink="/facturacion/estatus" routerLinkActive="active">Estatus Facturas</a>
+        </mat-expansion-panel>
+
+        <a mat-list-item routerLink="/doc" routerLinkActive="active">Documentación</a>
+
+        <a mat-list-item routerLink="/requisision" routerLinkActive="active">Requisision</a>
+      </mat-accordion>
+
+
+      
+      
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        >
+        <mat-icon aria-label="Side nav toggle icon">{{iconMenu}}</mat-icon>
+      </button>
+      <span>Portal de Proveedores CMT</span>
+      <span class="tool-spacer"></span>
+      <span style="padding-right: 30px;">
+          <mat-icon matBadge="15" matBadgeColor="warn">notifications_active</mat-icon>
+      </span>
+      <span>
+        <div mat-card-avatar class="example-header-image"></div>
+      </span>
+      <span>
+        {{ username }}
+      </span>
+    </mat-toolbar>
+    <!-- Add Content Here -->
+    <router-outlet>
+  
+    </router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

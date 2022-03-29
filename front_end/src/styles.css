@@ -1,0 +1,40 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.center-text{
+  text-align: center;
+}
+
+.submenu{
+  padding: 0;
+}
+
+.card-notas{
+  min-height: 210px;
+  max-height: 210px;
+  min-width: 210px;
+  max-width: 90%;
+}
+
+.cn-list{
+  overflow: auto;
+}
+
+.tool-spacer {
+  flex: 1 1 auto;
+}
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}
+
+.full-width-field {
+  width: 100%;
+}
+
+.p-l-2 {
+  padding-left: 2em;
+}

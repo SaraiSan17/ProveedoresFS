@@ -1,0 +1,96 @@
+<content>
+
+  <mat-card>
+    <mat-card-title class="center-text">
+      Bienvenido al portal CTM
+    </mat-card-title>
+  </mat-card>
+  
+  <mat-card>
+      <mat-card-title >
+          Proyectos Vigentes
+      </mat-card-title>
+      <mat-card-content>
+
+
+          <mat-grid-list cols="4" rowHeight="1:1" gutterSize="50px">
+              <mat-grid-tile>
+                  <mat-card>
+                      <img mat-card-image src="https://loremflickr.com/320/240/dog,kitten?random=1" width="300px">
+                      <mat-card-content class="center-text">
+                          <button mat-raised-button color="primary">Ver mas</button>
+                      </mat-card-content>
+                  </mat-card>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                  <mat-card>
+                      <img mat-card-image src="https://loremflickr.com/320/240/dog,kitten?random=2" width="300px">
+                      <mat-card-content class="center-text">
+                          <button mat-raised-button color="primary">Ver mas</button>
+                      </mat-card-content>
+                  </mat-card>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                  <mat-card>
+                      <img mat-card-image src="https://loremflickr.com/320/240/dog,kitten?random=3" >
+                      <mat-card-content class="center-text">
+                          <button mat-raised-button color="primary">Ver mas</button>
+                      </mat-card-content>
+                  </mat-card>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                  <mat-card>
+                      <img mat-card-image src="https://loremflickr.com/320/240/dog,kitten?random=4" width="300px">
+                      <mat-card-content class="center-text">
+                          <button mat-raised-button color="primary" >Ver mas</button>
+                      </mat-card-content>
+                  </mat-card>
+              </mat-grid-tile>
+          </mat-grid-list>
+
+
+          
+      </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+      <mat-card-content>
+          <mat-grid-list cols="2" rowHeight="2:1" gutterSize="50px">
+              
+              <mat-grid-tile>
+                <mat-card class="card-notas">
+                  <mat-card-title>Recordatorios</mat-card-title>
+                  <mat-card-content class="center-text" >
+                      <form [formGroup]="addNota" (ngSubmit)="submit()">
+                        <p>
+                          <mat-form-field appearance="fill">
+                            <mat-label>Textarea</mat-label>
+                            <textarea matInput [formControl]="nnota"></textarea>
+                          </mat-form-field>
+                        </p>
+                        
+                        <button type="submit" mat-raised-button color="primary">Agregar</button>
+                        
+                          
+                      </form>
+                  </mat-card-content>
+              </mat-card>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                  <mat-card>
+                      <mat-card-content class="card-notas cn-list" >
+                          <mat-list role="list">
+                              <mat-list-item *ngFor="let nota of notas">
+                                  {{ nota.texto }}
+                              </mat-list-item>
+                          </mat-list>
+                      </mat-card-content>
+                  </mat-card>
+              </mat-grid-tile>
+              
+              
+          </mat-grid-list>
+      </mat-card-content>
+  </mat-card>
+
+</content>

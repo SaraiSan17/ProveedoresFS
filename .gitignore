@@ -1,0 +1,6 @@
+/front_end/node_modules
+/backend_mysql/node_modules
+
+*.zip
+*.mwb.bak
+*.pdf

@@ -1,0 +1,198 @@
+<mat-card>
+ 
+    <mat-card-content class="center-text">
+  
+      <form [formGroup]="formDoc" (ngSubmit)="addDoc()">
+        <mat-grid-list cols="4" rowHeight="12px">
+          <mat-grid-tile rowspan="6"></mat-grid-tile>
+          <mat-grid-tile rowspan="6">
+            
+            <mat-form-field class="full-width-field ">
+              <mat-label>Proyecto</mat-label>
+              <mat-select formControlName="proyecto" name="proyecto" class="form-control" required>
+                <mat-option *ngFor="let proy of proys" [value]="proy.id">
+                  {{proy.clave}} {{proy.cliente}}
+                </mat-option>
+              </mat-select>
+  
+              <mat-error *ngIf="proyecto.invalid">{{getErrorMessage('proyecto')}}</mat-error>
+            </mat-form-field>
+            
+          </mat-grid-tile>
+          <mat-grid-tile rowspan="6" >
+            <mat-form-field class="full-width-field p-l-2">
+              <mat-label>Formato</mat-label>
+              <mat-select formControlName="formato" name="formato" class="form-control" required>
+                <mat-option *ngFor="let for of forms" [value]="for.id">
+                  {{for.nombre}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="formato.invalid">{{getErrorMessage('formato')}}</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile rowspan="6"></mat-grid-tile>
+          <mat-grid-tile rowspan="6"></mat-grid-tile>
+          <mat-grid-tile rowspan="6">
+            <mat-form-field class="full-width-field ">
+              <mat-label>Cliente</mat-label>
+              <mat-select formControlName="cliente" name="cliente" class="form-control" required>
+                <mat-option *ngFor="let cli of clients" [value]="cli.id">
+                  {{cli.razon_social}} 
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="cliente.invalid">{{getErrorMessage('cliente')}}</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile rowspan="6">
+            <!-- <mat-form-field class="full-width-field p-l-2"> -->
+            <div class="full-width-field p-l-2">
+              {{fileName || "Seleccionar archivo.   "}}  
+              <button type="button" mat-mini-fab color="primary" class="upload-btn"
+                (click)="fileInput.click()">
+                  <mat-icon>attach_file</mat-icon>
+              </button>
+              <input hidden (change)="onFileSelected($event)" #fileInput formControlName="archivo"  type="file" id="file">
+              <!-- <button type="button" mat-raised-button (click)="fileInput.click()" class="full-width-field">Choose File</button> -->
+              
+            </div>
+            <!-- </mat-form-field> -->
+
+          </mat-grid-tile>
+
+          <mat-grid-tile rowspan="6"></mat-grid-tile>
+          <mat-grid-tile rowspan="6"></mat-grid-tile>
+          <mat-grid-tile rowspan="6" colspan="2">
+            <mat-form-field class="full-width-field ">
+              <mat-label>Comentario</mat-label>
+              <textarea matInput formControlName="comentario"></textarea>
+              <!-- <mat-select formControlName="cliente" name="cliente" class="form-control" required>
+                <mat-option *ngFor="let cli of clients" [value]="cli.id">
+                  {{cli.razon_social}} 
+                </mat-option>
+              </mat-select> -->
+              <mat-error *ngIf="comentario.invalid">{{getErrorMessage('comentario')}}</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+
+          <mat-grid-tile rowspan="6"></mat-grid-tile>
+          <mat-grid-tile rowspan="6"></mat-grid-tile>
+          <mat-grid-tile rowspan="6" colspan="2">
+            <p>
+              <button mat-raised-button color="primary" type="submit">Agregar</button>
+            </p>
+          </mat-grid-tile>
+  
+        </mat-grid-list>
+  
+      </form>
+  
+    </mat-card-content>
+  </mat-card>
+  
+  <mat-card>
+    <mat-card-content>
+      <div>
+        <label>
+          <h3>Documentación</h3>
+        </label>
+      </div>
+      <div class="center-text mat-elevation-z8">
+        <table mat-table #table [dataSource]="allData" style="width: 100%;">
+          <ng-container matColumnDef="ot">
+            <mat-header-cell *matHeaderCellDef>OT</mat-header-cell>
+            <mat-cell *matCellDef="let asignacion">
+              <div> {{asignacion.ot}} </div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="proyecto">
+            <mat-header-cell *matHeaderCellDef>Proyecto</mat-header-cell>
+            <mat-cell *matCellDef="let asignacion">
+              <div> {{getInfo('p',asignacion.proyecto_id)}} </div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="cliente">
+            <mat-header-cell *matHeaderCellDef>Cliente</mat-header-cell>
+            <mat-cell *matCellDef="let asignacion">
+              <div> {{getInfo('c',asignacion.cliente_id)}} </div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="proveedor">
+            <mat-header-cell *matHeaderCellDef>Proveedor</mat-header-cell>
+            <mat-cell *matCellDef="let asignacion">
+              <div> {{getInfo('u',asignacion.users_id)}} </div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef>Actions </mat-header-cell>
+            <mat-cell *matCellDef="let asignacion">
+              <button mat-button color="primary" (click)="openDialog(this.asignacion)">Edit</button> |
+              <button mat-button color="warn" (click)="delete(this.asignacion)">Delete</button>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+          <mat-row *matRowDef="let dataSource; columns: columnsToDisplay;"></mat-row>
+  
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      </div>
+  
+    </mat-card-content>
+  </mat-card>
+  
+  <ng-template #callAPIDialog>
+    <h2 matDialogTitle>Editando Asignación </h2>
+    <mat-dialog-content>
+  
+  
+      <mat-form-field appearance="fill" class="full-width-field">
+        <mat-label>OT:</mat-label>
+        <input matInput [(ngModel)]="docToShow.ot">
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="full-width-field">
+        <mat-label>Proyecto</mat-label>
+        <mat-select [(ngModel)]="docToShow.proyecto_id" class="form-control" required>
+          <mat-option *ngFor="let proy of proys" [value]="proy.id">
+            {{proy.clave}} {{proy.cliente}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="full-width-field">
+        <mat-label>Cliente:</mat-label>
+        <mat-select [(ngModel)]="docToShow.cliente_id" class="form-control" required>
+          <mat-option *ngFor="let cli of clients" [value]="cli.id">
+            {{cli.razon_social}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="full-width-field">
+        <mat-label>Proveedor:</mat-label>
+        <mat-select [(ngModel)]="docToShow.users_id" class="form-control" required>
+          <mat-option *ngFor="let prov of forms" [value]="prov.id">
+            {{prov.nombre}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Comentario</mat-label>
+        <textarea matInput [(ngModel)]="docToShow.comentario"></textarea>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="full-width-field">
+        <mat-label>Ultima modificación:</mat-label>
+        <input matInput value="{{docToShow.updatedAt | date :'short'}}" disabled>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="full-width-field">
+        <mat-label>Proveedor creado:</mat-label>
+        <input matInput value="{{docToShow.createdAt | date :'short'}}" disabled>
+      </mat-form-field>
+  
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button matDialogClose="no" (click)="afeterC('no')">No</button>
+      <button mat-button matDialogClose="yes" (click)="afeterC('yes')">Yes</button>
+    </mat-dialog-actions>
+  </ng-template>
