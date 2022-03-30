@@ -127,7 +127,7 @@ export class ClienteComponent implements OnInit {
     return this.dialog.open(this.dialogTemplate, config );
   }
 
-  afeterC(tipo: String){
+  afterC(tipo: String){
     switch(tipo){
       case 'no':
         this.usrToShow = {rfc: "",

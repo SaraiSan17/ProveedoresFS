@@ -10,3 +10,9 @@
 .spacer {
     flex: 1 1 auto;
 }
+
+.table-container {
+    position: relative;
+    height: 400px;
+    overflow: auto;
+}

@@ -42,6 +42,7 @@ import { DocumentacionComponent } from './documentacion/documentacion.component'
 import { AddComponent } from './Requisicion/add/add.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -88,7 +89,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatDialogModule,
     MatPaginatorModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatMenuModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtTokenInterceptor, multi: true },

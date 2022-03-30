@@ -4,97 +4,249 @@
   </mat-toolbar>
   <mat-card-content class="center-text">
 
-    <form [formGroup]="formReq" (ngSubmit)="addReq()">
-      <mat-grid-list cols="3" rowHeight="12px">
-        <mat-grid-tile rowspan="6">
-          <mat-form-field class="width-field">
-            <mat-label>No. Requisición</mat-label>
-            <input type="text" matInput placeholder="No. Requisición" formControlName="numero">
-            <mat-error *ngIf="numero.invalid">{{getErrorMessage('numero')}}</mat-error>
-          </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile rowspan="6">
-          <mat-form-field class="width-field">
-            <mat-label>Proyecto</mat-label>
-            <mat-select formControlName="proyecto_id" name="proyecto_id" class="form-control" required>
-              <mat-option *ngFor="let proy of proys" [value]="proy.id">
-                {{proy.clave}} {{proy.cliente}}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="proyecto_id.invalid">{{getErrorMessage('proyecto_id')}}</mat-error>
-          </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile rowspan="6">
-          <mat-form-field appearance="fill">
-            <mat-label>Fecha solicitada</mat-label>
-            <input matInput [matDatepicker]="dp3" formControlName="fecha_solicitud" >
-            <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
-            <mat-datepicker #dp3 disabled="false"></mat-datepicker>
-            <mat-error *ngIf="fecha_solicitud.invalid">{{getErrorMessage('fecha_solicitud')}}</mat-error>
-          </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile rowspan="6">
-          <mat-form-field class="width-field">
-            <mat-label>No. Requisición</mat-label>
-            <input type="text" matInput placeholder="Solicitado por" formControlName="solicitado_por">
-            <mat-error *ngIf="solicitado_por.invalid">{{getErrorMessage('solicitado_por')}}</mat-error>
-          </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile rowspan="6">
-          <mat-form-field class="width-field">
-            <mat-label>Liquidación</mat-label>
-            <mat-select formControlName="liquidacion" name="liquidacion" class="form-control" required>
-              <mat-option *ngFor="let liq of liqs" [value]="liq.id">
-                {{liq.id}} {{liq.nombre}}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="liquidacion.invalid">{{getErrorMessage('liquidacion')}}</mat-error>
-          </mat-form-field>
+    <mat-card>
+      <mat-card-content>
+        <form [formGroup]="formReq" (ngSubmit)="addReq()">
+          <mat-grid-list cols="3" rowHeight="12px">
+            <mat-grid-tile rowspan="6">
+              <mat-form-field class="width-field">
+                <mat-label>No. Requisición</mat-label>
+                <input type="text" matInput placeholder="No. Requisición" formControlName="numero">
+                <mat-error *ngIf="numero.invalid">{{getErrorMessage('numero')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile rowspan="6">
+              <mat-form-field class="width-field">
+                <mat-label>Proyecto</mat-label>
+                <mat-select formControlName="proyecto_id" name="proyecto_id" class="form-control" required>
+                  <mat-option *ngFor="let proy of proys" [value]="proy.id">
+                    {{proy.clave}} {{proy.cliente}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="proyecto_id.invalid">{{getErrorMessage('proyecto_id')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile rowspan="6">
+              <mat-form-field appearance="fill">
+                <mat-label>Fecha solicitada</mat-label>
+                <input matInput [matDatepicker]="dp3" formControlName="fecha_solicitud">
+                <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+                <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+                <mat-error *ngIf="fecha_solicitud.invalid">{{getErrorMessage('fecha_solicitud')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile rowspan="6">
+              <mat-form-field class="width-field">
+                <mat-label>No. Requisición</mat-label>
+                <input type="text" matInput placeholder="Solicitado por" formControlName="solicitado_por">
+                <mat-error *ngIf="solicitado_por.invalid">{{getErrorMessage('solicitado_por')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile rowspan="6">
+              <mat-form-field class="width-field">
+                <mat-label>Liquidación</mat-label>
+                <mat-select formControlName="liquidacion" name="liquidacion" class="form-control" required>
+                  <mat-option *ngFor="let liq of liqs" [value]="liq.id">
+                    {{liq.id}} {{liq.nombre}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="liquidacion.invalid">{{getErrorMessage('liquidacion')}}</mat-error>
+              </mat-form-field>
+
+            </mat-grid-tile>
+            <mat-grid-tile rowspan="6">
+              <mat-form-field appearance="fill">
+                <mat-label>Fecha Requerida</mat-label>
+                <input matInput [matDatepicker]="freq" formControlName="fecha_requerida" class="form-control">
+                <mat-datepicker-toggle matSuffix [for]="freq"></mat-datepicker-toggle>
+                <mat-datepicker #freq disabled="false"></mat-datepicker>
+                <mat-error *ngIf="fecha_requerida.invalid">{{getErrorMessage('fecha_requerida')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile rowspan="6">
+              <mat-form-field class="width-field">
+                <mat-label>No. Requisición</mat-label>
+                <input type="text" matInput placeholder="Autorizado por" formControlName="autorizado_por">
+                <mat-error *ngIf="autorizado_por.invalid">{{getErrorMessage('autorizado_por')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile rowspan="6" colspan="2">
+              <mat-form-field class="width-field">
+                <mat-label>No. Requisición</mat-label>
+                <input type="text" matInput placeholder="Lugar de entrega" formControlName="lugar_entrega">
+                <mat-error *ngIf="lugar_entrega.invalid">{{getErrorMessage('lugar_entrega')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile rowspan="6" colspan="3">
+
+              <mat-form-field class="width-field-90 ">
+                <mat-label>Descripción</mat-label>
+                <textarea matInput formControlName="descripcion"></textarea>
+                <mat-error *ngIf="descripcion.invalid">{{getErrorMessage('descripcion')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile rowspan="6" colspan="3">
+              <p class="flex-1-3">
+                <button mat-raised-button color="primary" type="submit">Agregar</button>
+                <span class="spacer"></span>
+                <button mat-raised-button color="primary" type="button">impriir</button>
+                <span class="spacer"></span>
+                <button mat-raised-button color="primary" type="button" routerLink="/requisicion">regresar</button>
+              </p>
+            </mat-grid-tile>
+          </mat-grid-list>
+
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+
+      <form [formGroup]="fgMaterial">
+        <input hidden matInput formControlName="id">
+        <mat-card-content>
+          <mat-grid-list cols="8" rowHeight="12px">
+            <mat-grid-tile rowspan="6">
+              <mat-form-field class="width-field">
+                <mat-label>Clave</mat-label>
+                <input type="text" matInput placeholder="Clave" formControlName="mClave">
+                <mat-error *ngIf="mClave.invalid">{{getErrorMessage('mClave')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile rowspan="6" colspan="2">
+              <mat-form-field class="width-field">
+                <mat-label>Descripción</mat-label>
+                <input type="text" matInput placeholder="Descripción" formControlName="mDescripcion">
+                <a mat-icon-button matSuffix (click)="showMateriales()">
+                  <mat-icon>add</mat-icon>
+                </a>
+                
+                <mat-error *ngIf="mDescripcion.invalid">{{getErrorMessage('mDescripcion')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile rowspan="6">
+              <mat-form-field class="width-field">
+                <mat-label>Unidad</mat-label>
+                <input type="text" matInput placeholder="Unidad" formControlName="mUnidad">
+                <mat-error *ngIf="mUnidad.invalid">{{getErrorMessage('mUnidad')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile rowspan="6">
+              <mat-form-field class="width-field">
+                <mat-label>Cantidad</mat-label>
+                <input type="number" matInput placeholder="Cantidad" formControlName="mCantidad">
+                <mat-error *ngIf="mCantidad.invalid">{{getErrorMessage('mCantidad')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile rowspan="6" colspan="2">
+              <mat-form-field class="width-field">
+                <mat-label>Notas particulares</mat-label>
+                <input type="text" matInput placeholder="Notas particulares" formControlName="mNotas">
+                <mat-error *ngIf="mNotas.invalid">{{getErrorMessage('mNotas')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile rowspan="6">
+                <button mat-raised-button color="primary" type="button" (click)="addMaterial()"> <mat-icon>save</mat-icon> </button>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </mat-card-content>
+      </form>
+    </mat-card>
+    <mat-card>
+      <mat-card-content>
+        <table mat-table #table [dataSource]="allDataMATERIALES" style="width: 100%;">
+
+          <ng-container matColumnDef="mClave">
+            <mat-header-cell *matHeaderCellDef>Clave</mat-header-cell>
+            <mat-cell *matCellDef="let materials">
+              <div> {{materials.mClave}} </div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="mDescripcion">
+            <mat-header-cell *matHeaderCellDef>Descripción</mat-header-cell>
+            <mat-cell *matCellDef="let materials">
+              <div> {{materials.mDescripcion}} </div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="mUnidad">
+            <mat-header-cell *matHeaderCellDef>Unidad</mat-header-cell>
+            <mat-cell *matCellDef="let materials">
+              <div> {{materials.mUnidad}} </div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="mCantidad">
+            <mat-header-cell *matHeaderCellDef>Cantidad</mat-header-cell>
+            <mat-cell *matCellDef="let materials">
+              <div> {{materials.mCantidad}} </div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="mNotas">
+            <mat-header-cell *matHeaderCellDef>Notas</mat-header-cell>
+            <mat-cell *matCellDef="let materials">
+              <div> {{materials.mNotas}} </div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="acciones">
+            <mat-header-cell *matHeaderCellDef>Acciones </mat-header-cell>
+            <mat-cell *matCellDef="let materials">
+              <button mat-icon-button color="primary" (click)="deleteMATS(this.materials)"><mat-icon>delete</mat-icon></button>
+            </mat-cell>
+          </ng-container>
+  
           
-        </mat-grid-tile>
-        <mat-grid-tile rowspan="6">
-          <mat-form-field appearance="fill">
-            <mat-label>Fecha Requerida</mat-label>
-            <input matInput [matDatepicker]="freq" formControlName="fecha_requerida" class="form-control" >
-            <mat-datepicker-toggle matSuffix [for]="freq"></mat-datepicker-toggle>
-            <mat-datepicker #freq disabled="false"></mat-datepicker>
-            <mat-error *ngIf="fecha_requerida.invalid">{{getErrorMessage('fecha_requerida')}}</mat-error>
-          </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile rowspan="6">
-          <mat-form-field class="width-field">
-            <mat-label>No. Requisición</mat-label>
-            <input type="text" matInput placeholder="Autorizado por" formControlName="autorizado_por">
-            <mat-error *ngIf="autorizado_por.invalid">{{getErrorMessage('autorizado_por')}}</mat-error>
-          </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile rowspan="6" colspan="2">
-          <mat-form-field class="width-field">
-            <mat-label>No. Requisición</mat-label>
-            <input type="text" matInput placeholder="Lugar de entrega" formControlName="lugar_entrega">
-            <mat-error *ngIf="lugar_entrega.invalid">{{getErrorMessage('lugar_entrega')}}</mat-error>
-          </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile rowspan="6" colspan="3">
-          
-          <mat-form-field class="width-field-90 ">
-            <mat-label>Descripción</mat-label>
-            <textarea matInput formControlName="descripcion"></textarea>
-            <mat-error *ngIf="descripcion.invalid">{{getErrorMessage('descripcion')}}</mat-error>
-          </mat-form-field>
-        </mat-grid-tile>
-<mat-grid-tile rowspan="6" colspan="3">
-        <p class="flex-1-3">
-          <button mat-raised-button color="primary" type="submit">Agregar</button>
-          <span class="spacer"></span>
-          <button mat-raised-button color="primary" type="button">impriir</button>
-          <span class="spacer"></span>
-          <button mat-raised-button color="primary" type="button" routerLink="/requisicion">regresar</button>
-        </p>
-      </mat-grid-tile>
-      </mat-grid-list>
-      
-    </form>
+          <mat-header-row *matHeaderRowDef="columnsToDisplayMTS"></mat-header-row>
+          <mat-row *matRowDef="let dataSource; columns: columnsToDisplayMTS;"></mat-row>
+          <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
+        </table>
+      </mat-card-content>
+    </mat-card>
 
   </mat-card-content>
 </mat-card>
+
+
+<ng-template #callAPIDialog>
+  <h2 matDialogTitle>Busqueda de material</h2>
+  <div>
+    <mat-form-field class="full-width-field">
+      <mat-label>Filter</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Ej. Kilo" #input>
+    </mat-form-field>
+  </div>
+  <mat-dialog-content>
+    <div class="table-container">
+      <table mat-table #table [dataSource]="allData" style="width: 100%;">
+
+        <ng-container matColumnDef="clave">
+          <mat-header-cell *matHeaderCellDef>Clave</mat-header-cell>
+          <mat-cell *matCellDef="let material">
+            <div> {{material.clave}} </div>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="descripcion">
+          <mat-header-cell *matHeaderCellDef>Descripción</mat-header-cell>
+          <mat-cell *matCellDef="let material">
+            <div> {{material.descripcion}} </div>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="unidad">
+          <mat-header-cell *matHeaderCellDef>Unidad</mat-header-cell>
+          <mat-cell *matCellDef="let material">
+            <div> {{material.unidad}} </div>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="selecionar">
+          <mat-header-cell *matHeaderCellDef>selecionar </mat-header-cell>
+          <mat-cell *matCellDef="let material">
+            <button mat-icon-button color="primary" (click)="selectMat(this.material)"><mat-icon>done</mat-icon></button>
+          </mat-cell>
+        </ng-container>
+
+        
+        <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+        <mat-row *matRowDef="let dataSource; columns: columnsToDisplay;"></mat-row>
+        <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
+      </table>
+    </div>
+  </mat-dialog-content>
+</ng-template>

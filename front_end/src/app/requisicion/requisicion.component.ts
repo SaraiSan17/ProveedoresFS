@@ -162,7 +162,7 @@ export class RequisicionComponent implements OnInit {
     return this.dialog.open(this.dialogTemplate, config );
   }
 
-  afeterC(tipo: String){
+  afterC(tipo: String){
     switch(tipo){
       case 'no':
         this.reqToShow = {id : 0,ot: "", proyecto: 0, cliente:0, proveedor: 0};

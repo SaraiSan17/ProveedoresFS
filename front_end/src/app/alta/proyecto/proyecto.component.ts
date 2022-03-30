@@ -167,7 +167,7 @@ export class ProyectoComponent implements OnInit {
     )
   }
 
-  afeterC(tipo: String){
+  afterC(tipo: String){
     switch(tipo){
       case 'no':
         this.proyToShow = {
