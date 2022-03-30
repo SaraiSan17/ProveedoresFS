@@ -4,6 +4,7 @@ const Joi = require('joi');
 const validateRequest = require('_middleware/validate-request');
 const authorize = require('_middleware/authorize')
 const requisicionService = require('../servicios/requisicion.service');
+const reqMatService = require('../servicios/req_mat.service');
 
 // routes
 router.post('/register', authorize(), registerSchema, register);
@@ -18,20 +19,38 @@ function registerSchema(req, res, next) {
     const schema = Joi.object({
         numero: Joi.string().required(),
         solicitado_por: Joi.string().required(),
-        liquidacion: Joi.numero().required(),
+        liquidacion: Joi.number().required(),
         proyecto_id: Joi.number().required(),
         fecha_solicitud: Joi.date().required(),
         fecha_requerida: Joi.date().required(),
         autorizado_por: Joi.string().required(),
         lugar_entrega: Joi.string().required(),
         descripcion: Joi.string().required(),
+        materiales: Joi.array().required()
     });
     validateRequest(req, next, schema);
 }
 
 function register(req, res, next) {
+    console.log(req.body);
+    let idsMats = []; 
+    req.body.materiales.forEach(element => {
+        idsMats.push(element.id)
+    });
+    
     requisicionService.create(req.body)
-        .then(() => res.json({ message: 'Registro exitoso' }))
+        .then((data) => {
+            data.dataValues.id
+            idsMats.forEach(el => {
+                reqMatService.create({
+                    requisicion_id: data.dataValues.id,
+                    material_id: el
+                }).then(() => {
+                    console.log("REFERENCIA GUARDADA")
+                }).catch(next);
+            })
+            res.json({ message: 'Registro exitoso' })
+        })
         .catch(next);
 }
 
@@ -51,7 +70,7 @@ function updateSchema(req, res, next) {
     const schema = Joi.object({
         numero: Joi.string().empty(''),
         solicitado_por: Joi.string().empty(''),
-        liquidacion: Joi.numero(),
+        liquidacion: Joi.number(),
         proyecto_id: Joi.number(),
         fecha_solicitud: Joi.date(),
         fecha_requerida: Joi.date(),

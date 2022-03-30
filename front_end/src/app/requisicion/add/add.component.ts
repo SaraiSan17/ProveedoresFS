@@ -102,7 +102,9 @@ export class AddComponent implements OnInit {
   addReq() {
     if (this.formReq.valid) {
       console.log("Create", this.formReq.value)
-      this.edp.createRequisicion(this.formReq.value).subscribe(
+      let dataREQ = this.formReq.value;
+      dataREQ.materiales = this.materiales
+      this.edp.createRequisicion(dataREQ).subscribe(
         canDo => {
           console.log("Echo", canDo)
 

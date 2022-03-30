@@ -22,7 +22,15 @@ async function create(params) {
         throw 'Numero "' + params.numero + '" ya existe';
     }
     // save Requisicion
-    await db.Requisicion.create(params);
+    return new Promise(function(resolve, reject) {
+        db.Requisicion.create(params,{
+            returning:true                             
+        }).then(function(s){
+            let response = db.Requisicion.findOne({ where: { id: s.dataValues.id } });                      
+            resolve(response);
+        }); 
+    })
+     
 }
 
 async function update(id, params) {
