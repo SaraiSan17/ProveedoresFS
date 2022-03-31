@@ -25,7 +25,7 @@
               </mat-form-field>
             </mat-grid-tile>
             <mat-grid-tile rowspan="6">
-              <mat-form-field appearance="fill">
+              <mat-form-field class="width-field">
                 <mat-label>Fecha solicitada</mat-label>
                 <input matInput [matDatepicker]="dp3"  formControlName="fecha_solicitud">
                 <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
@@ -51,7 +51,7 @@
 
             </mat-grid-tile>
             <mat-grid-tile rowspan="6">
-              <mat-form-field appearance="fill">
+              <mat-form-field class="width-field">
                 <mat-label>Fecha Requerida</mat-label>
                 <input matInput [matDatepicker]="freq" formControlName="fecha_requerida" class="form-control">
                 <mat-datepicker-toggle matSuffix [for]="freq"></mat-datepicker-toggle>

@@ -21,9 +21,9 @@ export class AuthGuard implements CanActivate {
         this.edp.currentUser().subscribe(
           current => {
             if (current.Rol.rol = 'Admin'){
-              console.log('Is Admin');
+              console.log('Is Admin', state.url);
             }else{
-              console.log('Is Proveedor');
+              console.log('Is Proveedor', state.url);
             }
           },
           expireSession => {

@@ -1,1 +1,301 @@
-<p>agregar works!</p>
+<mat-card>
+  <mat-toolbar>
+    <h3>{{ idFac ? 'Editar' : 'Nueva' }} Factura</h3>
+  </mat-toolbar>
+  <mat-card-content class="center-text">
+
+    <mat-card>
+      <mat-card-content>
+        <form [formGroup]="formFac" (ngSubmit)="addfac()">
+          <input hidden matInput formControlName="id">
+          <mat-grid-list cols="3" rowHeight="12px">
+            <mat-grid-tile rowspan="6">
+              <mat-form-field class="width-field">
+                <mat-select  placeholder="Proveedor" formControlName="proveedor_id">
+                  <mat-option *ngFor="let prov of proveedores" [value]="prov.id">
+                    {{prov.razon_social}} ({{prov.sucursal}})
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="proveedor_id.invalid">{{getErrorMessage('proveedor_id')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile rowspan="6">
+              <mat-form-field class="width-field">
+                <mat-select placeholder="Proyecto" formControlName="proyecto_id" name="proyecto_id" class="form-control"
+                  required>
+                  <mat-option *ngFor="let proy of proys" [value]="proy.id">
+                    {{proy.clave}} {{proy.cliente}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="proyecto_id.invalid">{{getErrorMessage('proyecto_id')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile rowspan="6">
+              <mat-form-field  class="width-field">
+                <mat-select placeholder="Moneda" formControlName="moneda_id" class="form-control">
+                  <mat-option *ngFor="let moneda of monedas" [value]="moneda.id">
+                    {{moneda.clave}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="moneda_id.invalid">{{getErrorMessage('moneda_id')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile rowspan="6">
+              <mat-form-field class="width-field">
+                <input type="text" matInput placeholder="Folio" formControlName="folio">
+                <mat-error *ngIf="folio.invalid">{{getErrorMessage('folio')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile rowspan="6">
+              <mat-form-field class="width-field">
+                <input matInput [matDatepicker]="ffac" formControlName="fecha_factura" placeholder="Fecha Factura" class="form-control">
+                <mat-datepicker-toggle matSuffix [for]="ffac"></mat-datepicker-toggle>
+                <mat-datepicker #ffac disabled="false"></mat-datepicker>
+                <mat-error *ngIf="fecha_factura.invalid">{{getErrorMessage('fecha_factura')}}</mat-error>
+              </mat-form-field>
+
+            </mat-grid-tile>
+
+            <mat-grid-tile rowspan="6">
+              <mat-form-field class="width-field">
+                <input matInput type="number" formControlName="subtotal" placeholder="Subtotal" class="form-control">
+                <mat-error *ngIf="subtotal.invalid">{{getErrorMessage('subtotal')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile rowspan="6">
+              <mat-form-field class="width-field">
+                <input type="text" matInput placeholder="IVA." formControlName="iva">
+                <mat-error *ngIf="iva.invalid">{{getErrorMessage('iva')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile rowspan="6" >
+              <mat-form-field class="width-field">
+                <input type="text" matInput placeholder="Total" formControlName="total">
+                <mat-error *ngIf="total.invalid">{{getErrorMessage('total')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile rowspan="6" >
+              <mat-form-field class="width-field">
+                <mat-select placeholder="Tipo de Factura" formControlName="tipo_factura" class="form-control">
+                  <mat-option *ngFor="let factura of tFacturas" [value]="factura.val">
+                    {{factura.text}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="tipo_factura.invalid">{{getErrorMessage('tipo_factura')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile rowspan="6" >
+              <mat-form-field class="width-field">
+                <input type="text" matInput placeholder="Orden de Compra" formControlName="orden_compra">
+                <mat-error *ngIf="orden_compra.invalid">{{getErrorMessage('orden_compra')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile rowspan="6" >
+              <mat-form-field class="width-field">
+                <input type="text" matInput placeholder="Requisicion" formControlName="requisicion_id">
+                <mat-error *ngIf="requisicion_id.invalid">{{getErrorMessage('requisicion_id')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+
+
+            <mat-grid-tile rowspan="6">
+
+              <mat-form-field class="width-field">
+                <textarea matInput placeholder="Comentarios" formControlName="comentarios"></textarea>
+                <mat-error *ngIf="comentarios.invalid">{{getErrorMessage('comentarios')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+
+
+            <mat-grid-tile rowspan="6" colspan="3">
+                <div></div>
+                {{fileName || "Seleccionar archivo XML"}} 
+                <button type="button" mat-mini-fab color="primary" (click)="fileInput.click()" style="margin-left: 1em;">
+                  <mat-icon>attach_file</mat-icon>
+                </button>
+                <input hidden #fileInput (change)="onFileSelected($event)" type="file" formControlName="xml" accept="text/xml">
+                <!-- <mat-error *ngIf="xml.invalid">{{getErrorMessage('xml')}}</mat-error> -->
+            </mat-grid-tile>
+
+            <mat-grid-tile rowspan="6" colspan="3">
+              <p class="flex-1-3">
+                <button *ngIf="idFac == null" mat-raised-button color="primary" type="submit">Agregar</button>
+              </p>
+            </mat-grid-tile>
+
+          </mat-grid-list>
+
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <!--mat-card>
+
+      <form [formGroup]="fgMaterial">
+        <input hidden matInput formControlName="id">
+        <mat-card-content>
+          <mat-grid-list cols="8" rowHeight="12px">
+            <mat-grid-tile rowspan="6">
+              <mat-form-field class="width-field">
+                <mat-label>Clave</mat-label>
+                <input type="text" matInput placeholder="Clave" formControlName="mClave">
+                <mat-error *ngIf="mClave.invalid">{{getErrorMessage('mClave')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile rowspan="6" >
+              <mat-form-field class="width-field">
+                <mat-label>Descripción</mat-label>
+                <input type="text" matInput placeholder="Descripción" formControlName="mDescripcion">
+                <a mat-icon-button matSuffix (click)="showMateriales()">
+                  <mat-icon>add</mat-icon>
+                </a>
+
+                <mat-error *ngIf="mDescripcion.invalid">{{getErrorMessage('mDescripcion')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile rowspan="6">
+              <mat-form-field class="width-field">
+                <mat-label>Unidad</mat-label>
+                <input type="text" matInput placeholder="Unidad" formControlName="mUnidad">
+                <mat-error *ngIf="mUnidad.invalid">{{getErrorMessage('mUnidad')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile rowspan="6">
+              <mat-form-field class="width-field">
+                <mat-label>Cantidad</mat-label>
+                <input type="number" matInput placeholder="Cantidad" formControlName="mCantidad">
+                <mat-error *ngIf="mCantidad.invalid">{{getErrorMessage('mCantidad')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile rowspan="6" >
+              <mat-form-field class="width-field">
+                <mat-label>Notas particulares</mat-label>
+                <input type="text" matInput placeholder="Notas particulares" formControlName="mNotas">
+                <mat-error *ngIf="mNotas.invalid">{{getErrorMessage('mNotas')}}</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile rowspan="6">
+              <button mat-raised-button color="primary" type="button" (click)="addMaterial()">
+                <mat-icon>save</mat-icon>
+              </button>
+            </mat-grid-tile>
+
+          </mat-grid-list>
+        </mat-card-content>
+      </form>
+    </mat-card>
+    <mat-card>
+      <mat-card-content>
+        <table mat-table #table [dataSource]="allDataMATERIALES" style="width: 100%;">
+
+          <ng-container matColumnDef="mClave">
+            <mat-header-cell *matHeaderCellDef>Clave</mat-header-cell>
+            <mat-cell *matCellDef="let materials">
+              <div> {{materials.mClave}} </div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="mDescripcion">
+            <mat-header-cell *matHeaderCellDef>Descripción</mat-header-cell>
+            <mat-cell *matCellDef="let materials">
+              <div> {{materials.mDescripcion}} </div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="mUnidad">
+            <mat-header-cell *matHeaderCellDef>Unidad</mat-header-cell>
+            <mat-cell *matCellDef="let materials">
+              <div> {{materials.mUnidad}} </div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="mCantidad">
+            <mat-header-cell *matHeaderCellDef>Cantidad</mat-header-cell>
+            <mat-cell *matCellDef="let materials">
+              <div> {{materials.mCantidad}} </div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="mNotas">
+            <mat-header-cell *matHeaderCellDef>Notas</mat-header-cell>
+            <mat-cell *matCellDef="let materials">
+              <div> {{materials.mNotas}} </div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="acciones">
+            <mat-header-cell *matHeaderCellDef>Acciones </mat-header-cell>
+            <mat-cell *matCellDef="let materials">
+              <button mat-icon-button color="primary" (click)="deleteMATS(this.materials)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+
+
+          <mat-header-row *matHeaderRowDef="columnsToDisplayMTS"></mat-header-row>
+          <mat-row *matRowDef="let dataSource; columns: columnsToDisplayMTS;"></mat-row>
+        </table>
+      </mat-card-content>
+    </mat-card-->
+
+  </mat-card-content>
+</mat-card>
+
+
+<!--ng-template #callAPIDialog>
+  <h2 matDialogTitle>Busqueda de material</h2>
+  <div>
+    <mat-form-field class="full-width-field">
+      <mat-label>Filter</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Ej. Kilo" #input>
+    </mat-form-field>
+  </div>
+  <mat-dialog-content>
+    <div class="table-container">
+      <table mat-table #table [dataSource]="allData" style="width: 100%;">
+
+        <ng-container matColumnDef="clave">
+          <mat-header-cell *matHeaderCellDef>Clave</mat-header-cell>
+          <mat-cell *matCellDef="let material">
+            <div> {{material.clave}} </div>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="descripcion">
+          <mat-header-cell *matHeaderCellDef>Descripción</mat-header-cell>
+          <mat-cell *matCellDef="let material">
+            <div> {{material.descripcion}} </div>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="unidad">
+          <mat-header-cell *matHeaderCellDef>Unidad</mat-header-cell>
+          <mat-cell *matCellDef="let material">
+            <div> {{material.unidad}} </div>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="selecionar">
+          <mat-header-cell *matHeaderCellDef>selecionar </mat-header-cell>
+          <mat-cell *matCellDef="let material">
+            <button mat-icon-button color="primary" (click)="selectMat(this.material)">
+              <mat-icon>done</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+
+        <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+        <mat-row *matRowDef="let dataSource; columns: columnsToDisplay;"></mat-row>
+        
+      </table>
+    </div>
+  </mat-dialog-content>
+</ng-template-->
