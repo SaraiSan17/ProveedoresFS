@@ -5,3 +5,7 @@
 .width-field-90{
     width: 90%;
 }
+
+.spacer {
+    flex: 1 1 auto;
+}

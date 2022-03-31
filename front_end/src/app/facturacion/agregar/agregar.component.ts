@@ -26,6 +26,10 @@ export class AgregarComponent implements OnInit {
   comentarios = new FormControl('', [Validators.required]);
   xml = new FormControl('', [Validators.required]);
 
+  status = new FormControl('');
+  fecha_pago = new FormControl(Date.now());
+  comentarios_ext = new FormControl('');
+
 
   formFac: FormGroup = new FormGroup({
     id: this.id,
@@ -52,11 +56,15 @@ export class AgregarComponent implements OnInit {
   ];
   
   tFacturas = [
-    {val: 1,text: "Factura rectificativa"},
-    {val: 2,text: "Factura recapitulativa"},
-    {val: 3,text: "Factura proforma"},
-    {val: 4,text: "Factura simplificada"},
-    {val: 5,text: "Factura electrónica"},
+    {val: 1,text: "Material"},
+    {val: 2,text: "Mano de Obra"}
+  ]
+
+  estatus = [
+    {id:1, text: "Ingresada"},
+    {id:2, text: "Cancelada"},
+    {id:3, text: "Programada"},
+    {id:4, text: "Pagada"}
   ]
 
   proveedores: any = [];
@@ -65,12 +73,16 @@ export class AgregarComponent implements OnInit {
   fileName:any = null;
   fileToUpload:File =null;
 
+
+  
   constructor(private edp: EndpointsService, private rutaActiva: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.idFac = this.rutaActiva.snapshot?.params.idFac;
     this.getProys();
     this.getProvs();
     this.getRequisicion();
+    this.getFactura();
   }
 
   onFileSelected(event:any) {
@@ -114,6 +126,36 @@ export class AgregarComponent implements OnInit {
       requisiciones => this.requisiciones = requisiciones,
       notReqs => console.log("Error requisiciones", notReqs)
     )
+  }
+
+  getFactura(){
+    if (this.idFac != undefined){
+      this.edp.getFactura(this.idFac).subscribe(
+        fac => {
+          console.log("get fac", fac);
+
+          this.formFac.patchValue({
+            id: fac.id,
+            proveedor_id: this.proveedor_id,
+            proyecto_id: fac.proyecto_id,
+            moneda_id: fac.moneda_id,
+            folio: fac.folio,
+            fecha_factura: fac.fecha_factura,
+            subtotal: fac.subtotal,
+            iva: fac.iva,
+            total: fac.total,
+            tipo_factura: fac.tipo_factura,
+            orden_compra: fac.orden_compra,
+            requisicion_id: fac.requisicion_id,
+            comentarios: fac.comentarios
+          })
+        },
+        notDoc => {
+          console.log(notDoc)
+        }
+      )
+    }
+    
   }
 
   getErrorMessage(input: String) {

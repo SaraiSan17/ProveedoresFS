@@ -41,9 +41,9 @@ const routes: Routes = [
 
   { path: 'facturacion', component: NavigationComponent,
     children: [
+      { path: '', component: FacturacionComponent , canActivate: [AuthGuard]},
       { path: 'agregar', component: AgregarComponent, canActivate: [AuthGuard] },
-      { path: 'consultar', component: ConsultarComponent, canActivate: [AuthGuard] },
-      { path: 'estatus', component: EstatusComponent , canActivate: [AuthGuard]},
+      { path: ':idFac', component: AgregarComponent, canActivate: [AuthGuard] },
     ]
   },
   

@@ -1,6 +1,10 @@
 <mat-card>
   <mat-toolbar>
-    <h3>{{ idFac ? 'Editar' : 'Nueva' }} Factura</h3>
+    <h3>{{ idFac ? 'Vista de' : 'Nueva' }} Factura</h3>
+    <span class="spacer"></span>
+    <a mat-list-item routerLink="/facturacion" >
+      <mat-icon>arrow_back_ios</mat-icon>
+    </a>
   </mat-toolbar>
   <mat-card-content class="center-text">
 
@@ -129,11 +133,41 @@
                 </button>
                 <input hidden #fileInput (change)="onFileSelected($event)" type="file" formControlName="xml" accept="text/xml">
                 <!-- <mat-error *ngIf="xml.invalid">{{getErrorMessage('xml')}}</mat-error> -->
-            </mat-grid-tile>
+            </mat-grid-tile>  
+
+            <div *ngIf="idFac != null">
+              <mat-grid-tile rowspan="6" >
+                <mat-form-field class="width-field">
+                  <mat-select  placeholder="Estatus" formControlName="status">
+                    <mat-option *ngFor="let est of estatus" [value]="est.id">
+                      {{est.text}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </mat-grid-tile>
+              
+              <mat-grid-tile rowspan="6">
+                <mat-form-field class="width-field">
+                  <input matInput [matDatepicker]="fpag" formControlName="fecha_pago" placeholder="Fecha Pago" class="form-control">
+                  <mat-datepicker-toggle matSuffix [for]="fpag"></mat-datepicker-toggle>
+                  <mat-datepicker #fpag disabled="false"></mat-datepicker>
+                  <mat-error *ngIf="fecha_pago.invalid">{{getErrorMessage('fecha_pago')}}</mat-error>
+                </mat-form-field>
+              </mat-grid-tile>
+
+              <mat-grid-tile rowspan="6">
+
+                <mat-form-field class="width-field">
+                  <textarea matInput placeholder="Comentarios" formControlName="comentarios_ext"></textarea>
+                  <mat-error *ngIf="comentarios_ext.invalid">{{getErrorMessage('comentarios_ext')}}</mat-error>
+                </mat-form-field>
+              </mat-grid-tile>
+            </div>
 
             <mat-grid-tile rowspan="6" colspan="3">
               <p class="flex-1-3">
                 <button *ngIf="idFac == null" mat-raised-button color="primary" type="submit">Agregar</button>
+                <button *ngIf="idFac != null" mat-raised-button color="primary" type="submit">Actualizar</button>
               </p>
             </mat-grid-tile>
 
