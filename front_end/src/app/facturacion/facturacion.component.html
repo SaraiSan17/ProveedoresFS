@@ -69,7 +69,7 @@
           <ng-container matColumnDef="status">
             <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
             <mat-cell *matCellDef="let factura">
-              <div> {{factura.status}} </div>
+              <div> {{estatus[factura.status]}} </div>
             </mat-cell>
           </ng-container>
           <ng-container matColumnDef="fecha_pago">

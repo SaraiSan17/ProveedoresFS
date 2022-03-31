@@ -30,6 +30,8 @@ function model(sequelize) {
         comentarios: { type: DataTypes.STRING, allowNull: false },
         xml: { type: DataTypes.STRING, allowNull: false },
         status: { type: DataTypes.INTEGER, allowNull: false },
+        fecha_pago: { type: DataTypes.DATE, allowNull: false },
+        comentarios_ext: { type: DataTypes.STRING, allowNull: false },
         createdAt: DataTypes.DATE,
         updatedAt: DataTypes.DATE
     };

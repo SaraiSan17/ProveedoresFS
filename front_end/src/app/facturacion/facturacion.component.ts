@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { EndpointsService } from '../services/endpoints.service';
 
-interface FACTURACION{
+interface FACTURACION {
   id: number
   proveedor_id: number
   proyecto_id: number
@@ -26,12 +26,20 @@ interface FACTURACION{
 })
 export class FacturacionComponent implements OnInit {
 
-  columnsToDisplay: string[] = ["proyecto","folio", "frecha_factura","fecha_ingreso","subtotal","iva","todal","folio_oc","importe_oc","status","fecha_pago","comentarios","actions"];
+  columnsToDisplay: string[] = ["proyecto", "folio", "frecha_factura", "fecha_ingreso", "subtotal", "iva", "todal", "folio_oc", "importe_oc", "status", "fecha_pago", "comentarios", "actions"];
 
-  FACTURACION_DATA : FACTURACION[] = [];
+  FACTURACION_DATA: FACTURACION[] = [];
   allData = new MatTableDataSource<FACTURACION>(this.FACTURACION_DATA);
 
   proys: any = [];
+
+  estatus = [
+    "nOi",
+    "Ingresada",
+    "Cancelada",
+    "Programada",
+    "Pagada"
+  ]
 
   constructor(private edp: EndpointsService) { }
 
@@ -40,45 +48,45 @@ export class FacturacionComponent implements OnInit {
     this.getProys();
   }
 
-  listFacturas(){
+  listFacturas() {
     this.FACTURACION_DATA = []
     this.edp.listFactura().subscribe(
       doLP => {
         this.FACTURACION_DATA = doLP
-        
+
         this.allData.data = this.FACTURACION_DATA;
       },
       notDoLP => console.log(notDoLP)
     )
   }
 
-  getProys(){
+  getProys() {
     this.edp.listProyectos().subscribe(
       proys => this.proys = proys,
-      notProys => console.log("Error proys",notProys)
+      notProys => console.log("Error proys", notProys)
     )
   }
-  
-  delete(row_obj:any){
-    this.FACTURACION_DATA = this.FACTURACION_DATA.filter((value,key)=>{
+
+  delete(row_obj: any) {
+    this.FACTURACION_DATA = this.FACTURACION_DATA.filter((value, key) => {
       return value.id != row_obj.id;
     });
     this.allData.data = this.FACTURACION_DATA;//refresh tabla
   }
-  
-  getInfo(type: string, id:number){
+
+  getInfo(type: string, id: number) {
     let info = "Información no encontrado";
     switch (type) {
       case "p":
-        if(this.proys.length > 0){
-          let data = this.proys.filter((v:any) =>{
+        if (this.proys.length > 0) {
+          let data = this.proys.filter((v: any) => {
             return v.id == id;
           })
           info = data[0].clave;
-        }else {
+        } else {
           info = "Cargando información"
         }
-        
+
         break;
     }
     return info;
