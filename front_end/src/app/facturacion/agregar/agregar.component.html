@@ -69,14 +69,15 @@
 
             <mat-grid-tile rowspan="6">
               <mat-form-field class="width-field">
-                <input type="text" matInput placeholder="IVA." formControlName="iva">
+                <input type="number" matInput placeholder="IVA." formControlName="iva">
+                <!-- <mat-icon matSuffix>mode_edit</mat-icon> -->
                 <mat-error *ngIf="iva.invalid">{{getErrorMessage('iva')}}</mat-error>
               </mat-form-field>
             </mat-grid-tile>
 
             <mat-grid-tile rowspan="6" >
               <mat-form-field class="width-field">
-                <input type="text" matInput placeholder="Total" formControlName="total">
+                <input type="number" matInput placeholder="Total" formControlName="total">
                 <mat-error *ngIf="total.invalid">{{getErrorMessage('total')}}</mat-error>
               </mat-form-field>
             </mat-grid-tile>
@@ -101,7 +102,11 @@
 
             <mat-grid-tile rowspan="6" >
               <mat-form-field class="width-field">
-                <input type="text" matInput placeholder="Requisicion" formControlName="requisicion_id">
+                <mat-select  placeholder="Requisicion" formControlName="requisicion_id">
+                  <mat-option *ngFor="let req of requisiciones" [value]="req.id">
+                    {{req.numero}}
+                  </mat-option>
+                </mat-select>
                 <mat-error *ngIf="requisicion_id.invalid">{{getErrorMessage('requisicion_id')}}</mat-error>
               </mat-form-field>
             </mat-grid-tile>

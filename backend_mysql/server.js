@@ -18,6 +18,7 @@ app.use('/formato',  require('./controladores/formato.controller'));
 app.use('/documento',  require('./controladores/documento.controller'));
 app.use('/requisicion',  require('./controladores/requisicion.controller'));
 app.use('/mats',  require('./controladores/req_mat.controller'));
+app.use('/factura',  require('./controladores/factura.controller'));
 
 // global error handler
 app.use(errorHandler);

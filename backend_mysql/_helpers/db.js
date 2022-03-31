@@ -33,6 +33,7 @@ async function initialize() {
         otherKey: 'material_id' // replaces `productId`
       });
     db.ReqMat.belongsTo(db.Material,{foreignKey: 'material_id'});
+    db.Factura = require('../modelos/factura.model')(sequelize);
     // db.Requisicion.hasMany(db.ReqMat, { foreignKey: 'requisicion_id' });
     // db.Material.belongsToMany(db.Requisicion, { as: 'requisicions', through: 'ReqMat', foreignKey: 'material_id' });
     // db.Material.hasMany(db.ReqMat, { foreignKey: 'material_id' });

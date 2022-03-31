@@ -19,6 +19,7 @@ export class EndpointsService {
   private urlBaseDocumento = this.BaseURI + '/documento';
   private urlBaseRequisicion = this.BaseURI + '/requisicion';
   private urlBaseMatsRequisicion = this.BaseURI + '/mats';
+  private urlBaseFactura = this.BaseURI + '/factura';
 
   private httpOptions = {
     headers: new HttpHeaders({
@@ -256,4 +257,32 @@ export class EndpointsService {
     return this.apiClient.put(url,params, this.httpOptions)
   }
   //termina endpoints para Requisicion
+
+    //inicia endpoitns para formato
+    listFactura(): Observable<any>{
+      const url = `${this.urlBaseFactura}`;
+      return this.apiClient.get(url)
+    }
+    
+    getFactura(id: any): Observable<any> {
+      const url = `${this.urlBaseFactura}/${id}`;
+  
+      return this.apiClient.get(url);
+    }
+  
+    createFactura(data: {}): Observable<any> {
+      const params = JSON.stringify(data);
+      const url = `${this.urlBaseFactura}/register`;
+  
+      return this.apiClient.post(url, params, this.httpOptions);
+    }
+  
+    updateFactura(id: number,data: {}):Observable<any>{
+      const params = JSON.stringify(data);
+      const url = `${this.urlBaseFactura}/${id}`;
+      return this.apiClient.put(url,params, this.httpOptions)
+    }
+    //termina endpoints para formato
+
+
 }

@@ -11,14 +11,14 @@ import { EndpointsService } from 'src/app/services/endpoints.service';
 export class AgregarComponent implements OnInit {
   idFac:number = null;
 
-  id = new FormControl('', [Validators.required]);
+  id = new FormControl('');
   proveedor_id = new FormControl('', [Validators.required]);
   proyecto_id = new FormControl('', [Validators.required]);
   moneda_id = new FormControl('', [Validators.required]);
   folio = new FormControl('', [Validators.required]);
   fecha_factura = new FormControl('', [Validators.required]);
   subtotal = new FormControl('', [Validators.required]);
-  iva = new FormControl('', [Validators.required]);
+  iva = new FormControl(16, [Validators.required]);
   total = new FormControl('', [Validators.required]);
   tipo_factura = new FormControl('', [Validators.required]);
   orden_compra = new FormControl('', [Validators.required]);
@@ -60,6 +60,7 @@ export class AgregarComponent implements OnInit {
   ]
 
   proveedores: any = [];
+  requisiciones: any = [];
 
   fileName:any = null;
   fileToUpload:File =null;
@@ -67,8 +68,9 @@ export class AgregarComponent implements OnInit {
   constructor(private edp: EndpointsService, private rutaActiva: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.getProys()
-    this.getProvs()
+    this.getProys();
+    this.getProvs();
+    this.getRequisicion();
   }
 
   onFileSelected(event:any) {
@@ -81,7 +83,16 @@ export class AgregarComponent implements OnInit {
   }
 
   addfac(){
+    if(this.formFac.valid){
+      
+      this.edp.createFactura(this.formFac.value).subscribe(
+        (        doneR: any) => console.log(doneR),
+        (        notR: any) => console.log(notR)
+      )
+    }else {
+      console.log(':-|', 'Invalid input values..!', this.formFac)
 
+    }
   }
 
   getProys() {
@@ -95,6 +106,13 @@ export class AgregarComponent implements OnInit {
     this.edp.listProveedor().subscribe(
       proveedores => this.proveedores = proveedores,
       notProvs => console.log("Error proveedores",notProvs)
+    )
+  }
+
+  getRequisicion(){
+    this.edp.listRequisicion().subscribe(
+      requisiciones => this.requisiciones = requisiciones,
+      notReqs => console.log("Error requisiciones", notReqs)
     )
   }
 
