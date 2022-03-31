@@ -24,10 +24,10 @@ export class AgregarComponent implements OnInit {
   orden_compra = new FormControl('', [Validators.required]);
   requisicion_id = new FormControl('', [Validators.required]);
   comentarios = new FormControl('', [Validators.required]);
-  xml = new FormControl('', [Validators.required]);
+  xml = new FormControl('');
 
   status = new FormControl('');
-  fecha_pago = new FormControl(Date.now());
+  fecha_pago = new FormControl('');
   comentarios_ext = new FormControl('');
 
 
@@ -45,7 +45,10 @@ export class AgregarComponent implements OnInit {
     orden_compra: this.orden_compra,
     requisicion_id: this.requisicion_id,
     comentarios: this.comentarios,
-    xml: this.xml
+    xml: this.xml,
+    status: this.status,
+    fecha_pago: this.fecha_pago,
+    comentarios_ext: this.comentarios_ext,
   });
 
   proys: any = [];
@@ -95,15 +98,19 @@ export class AgregarComponent implements OnInit {
   }
 
   addfac(){
-    if(this.formFac.valid){
+    if(this.idFac == null){
+      if(this.formFac.valid){
       
-      this.edp.createFactura(this.formFac.value).subscribe(
-        (        doneR: any) => console.log(doneR),
-        (        notR: any) => console.log(notR)
-      )
+        this.edp.createFactura(this.formFac.value).subscribe(
+          (        doneR: any) => console.log(doneR),
+          (        notR: any) => console.log(notR)
+        )
+      }else {
+        console.log(':-|', 'Invalid input values..!', this.formFac)
+  
+      }
     }else {
-      console.log(':-|', 'Invalid input values..!', this.formFac)
-
+      this.updateFac();
     }
   }
 
@@ -128,6 +135,29 @@ export class AgregarComponent implements OnInit {
     )
   }
 
+  updateFac(){
+    this.edp.updateFactura(this.idFac,{
+      proveedor_id: this.formFac.value.proveedor_id,
+      proyecto_id: this.formFac.value.proyecto_id,
+      moneda_id: this.formFac.value.moneda_id,
+      folio: this.formFac.value.folio,
+      fecha_factura: this.formFac.value.fecha_factura,
+      subtotal: this.formFac.value.subtotal,
+      iva: this.formFac.value.iva,
+      total: this.formFac.value.total,
+      tipo_factura: this.formFac.value.tipo_factura,
+      orden_compra: this.formFac.value.orden_compra,
+      requisicion_id: this.formFac.value.requisicion_id,
+      comentarios: this.formFac.value.comentarios,
+      status: this.formFac.value.status,
+      fecha_pago: this.formFac.value.fecha_pago,
+      comentarios_ext: this.formFac.value.comentarios_ext
+    }).subscribe(
+      done => console.log("record updated",done),
+      fail => console.log("Fail on Update",fail)
+    )
+  }
+
   getFactura(){
     if (this.idFac != undefined){
       this.edp.getFactura(this.idFac).subscribe(
@@ -136,7 +166,7 @@ export class AgregarComponent implements OnInit {
 
           this.formFac.patchValue({
             id: fac.id,
-            proveedor_id: this.proveedor_id,
+            proveedor_id: fac.proveedor_id,
             proyecto_id: fac.proyecto_id,
             moneda_id: fac.moneda_id,
             folio: fac.folio,
@@ -147,7 +177,10 @@ export class AgregarComponent implements OnInit {
             tipo_factura: fac.tipo_factura,
             orden_compra: fac.orden_compra,
             requisicion_id: fac.requisicion_id,
-            comentarios: fac.comentarios
+            comentarios: fac.comentarios,
+            status: fac.status,
+            fecha_pago: fac.fecha_pago,
+            comentarios_ext: fac.comentarios_ext
           })
         },
         notDoc => {

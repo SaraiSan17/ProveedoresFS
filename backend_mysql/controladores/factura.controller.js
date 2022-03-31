@@ -68,7 +68,10 @@ function updateSchema(req, res, next) {
         orden_compra: Joi.string().empty(''),
         requisicion_id: Joi.number(),
         comentarios: Joi.string().empty(''),
-        xml: Joi.any().required()
+        xml: Joi.any(),
+        status: Joi.number(),
+        fecha_pago: Joi.date(),
+        comentarios_ext: Joi.string()
     });
     validateRequest(req, next, schema);
 }
