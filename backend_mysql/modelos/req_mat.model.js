@@ -4,8 +4,22 @@ module.exports = model;
 
 function model(sequelize) {
     const attributes = {
-        requisicion_id: {type: DataTypes.INTEGER},
-        material_id: {type: DataTypes.INTEGER},
+        id: {type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true},
+        
+        requisicion_id: {type: DataTypes.INTEGER,
+            references: {
+                model: "Requisicion", // 'Movies' would also work
+                key: 'id'
+              }
+            },
+        material_id: {type: DataTypes.INTEGER,
+            references: {
+                model: "Material", // 'Movies' would also work
+                key: 'id'
+              }
+        },
+        cantidad: {type: DataTypes.INTEGER},
+        notas: {type: DataTypes.STRING},
     };
 
     const options = {

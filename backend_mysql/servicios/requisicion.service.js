@@ -1,4 +1,6 @@
 ﻿const db = require('../_helpers/db');
+const Sequelize = require('../node_modules/sequelize');
+const Op = Sequelize.Op;
 
 module.exports = {
     getAll,
@@ -35,10 +37,15 @@ async function create(params) {
 
 async function update(id, params) {
     const Requisicion = await getRequisicion(id);
+    const mats = params.materiales
+    delete params.materiales
+    console.log("MATS",mats)
+    console.log("PARAMS", params)
     // validate
-    if (await db.Requisicion.findOne({ where: { numero: params.numero } })) {
+    if (await db.Requisicion.findOne({ where: {'id': {[Op.ne]: id}, 'numero': params.numero } })) {
         throw 'Numero "' + params.numero + '" ya existe';
     }
+    console.log("After await")
     // copy params to Requisicion and save
     Object.assign(Requisicion, params);
     await Requisicion.save();

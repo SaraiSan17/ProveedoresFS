@@ -32,24 +32,25 @@ function registerSchema(req, res, next) {
 }
 
 function register(req, res, next) {
-    console.log(req.body);
+    
     let idsMats = []; 
     req.body.materiales.forEach(element => {
-        idsMats.push(element.id)
+        idsMats.push(element)
     });
-    
     requisicionService.create(req.body)
         .then((data) => {
-            data.dataValues.id
+            console.log("ID REQUISICION",data.dataValues.id)
             idsMats.forEach(el => {
                 reqMatService.create({
                     requisicion_id: data.dataValues.id,
-                    material_id: el
+                    material_id: el.id,
+                    cantidad: el.mCantidad,
+                    notas: el.mNotas
                 }).then(() => {
                     console.log("REFERENCIA GUARDADA")
-                }).catch(next);
+                }).catch(fail => console.log("FAIL REQ MAT",fail));
             })
-            res.json({ message: 'Registro exitoso' })
+            res.json({ message: 'Registro exitoso', value:data })
         })
         .catch(next);
 }
@@ -76,14 +77,37 @@ function updateSchema(req, res, next) {
         fecha_requerida: Joi.date(),
         autorizado_por: Joi.string().empty(''),
         lugar_entrega: Joi.string().empty(''),
-        descripcion: Joi.string().empoty(''),
+        descripcion: Joi.string().empty(''),
+        materiales: Joi.array()
     });
     validateRequest(req, next, schema);
 }
 
 function update(req, res, next) {
+
+    let idsMats = []; 
+    req.body.materiales.forEach(element => {
+        idsMats.push(element)
+    });
+    console.log("Materiales",idsMats);
+    reqMatService.deleteRefs(req.params.id).then(() => {
+        console.log("REFERENCIASBORRADAS")
+    })
     requisicionService.update(req.params.id, req.body)
-        .then(requisicion => res.json(requisicion))
+        .then((data) => {
+            console.log("ID REQUISICION",data.id)
+            idsMats.forEach(el => {
+                reqMatService.create({
+                    requisicion_id: data.id,
+                    material_id: el.id,
+                    cantidad: el.mCantidad,
+                    notas: el.mNotas
+                }).then(() => {
+                    console.log("REFERENCIA GUARDADA update")
+                }).catch(fail => console.log("FAIL REQ MAT",fail));
+            })
+            res.json({ message: 'Registro exitoso' })
+        })
         .catch(next);
 }
 

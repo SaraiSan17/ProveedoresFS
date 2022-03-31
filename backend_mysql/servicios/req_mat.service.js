@@ -3,11 +3,11 @@
 module.exports = {
     getAll,
     create,
-    delete: _delete
+    deleteRefs: _deleteRefs
 };
 
-async function getAll() {
-    return await db.ReqMat.findAll();
+async function getAll(idr) {
+    return await db.ReqMat.findAll({where: {requisicion_id:  idr},include: db.Material});
 }
 
 async function create(params) {
@@ -16,7 +16,15 @@ async function create(params) {
 }
 
 
-async function _delete(id) {
-    const reqMat = await getReqMat(id);
-    await reqMat.destroy();
+async function _deleteRefs(idr) {
+    const reqMat = await getReqMat(idr);
+    reqMat.forEach(element => {
+        element.destroy();
+    });
+}
+
+async function getReqMat(idr) {
+    const reqMat = await db.ReqMat.findAll({where: {requisicion_id:  idr}});
+    if (!reqMat) throw 'REferencia no encontrada';
+    return reqMat;
 }

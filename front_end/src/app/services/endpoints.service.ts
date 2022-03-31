@@ -18,6 +18,7 @@ export class EndpointsService {
   private urlBaseFormato = this.BaseURI + '/formato';
   private urlBaseDocumento = this.BaseURI + '/documento';
   private urlBaseRequisicion = this.BaseURI + '/requisicion';
+  private urlBaseMatsRequisicion = this.BaseURI + '/mats';
 
   private httpOptions = {
     headers: new HttpHeaders({
@@ -233,6 +234,12 @@ export class EndpointsService {
 
   getRequisicion(id: any): Observable<any> {
     const url = `${this.urlBaseRequisicion}/${id}`;
+
+    return this.apiClient.get(url);
+  }
+
+  getMaterialRequisicion(id: any): Observable<any> {
+    const url = `${this.urlBaseMatsRequisicion}/${id}`;
 
     return this.apiClient.get(url);
   }

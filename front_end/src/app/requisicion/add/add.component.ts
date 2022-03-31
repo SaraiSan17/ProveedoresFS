@@ -5,6 +5,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { EndpointsService } from 'src/app/services/endpoints.service';
+import { ActivatedRoute, Params } from '@angular/router';
 
 interface MATERIAL {
   id?: number,
@@ -15,8 +16,8 @@ interface MATERIAL {
 }
 
 interface MATERIALES extends MATERIAL {
-  mcantidad: number,
-  mnotas: string
+  mCantidad: number,
+  mNotas: string
 }
 
 @Component({
@@ -46,7 +47,7 @@ export class AddComponent implements OnInit {
   mDescripcion = new FormControl('', [Validators.required]);
   mUnidad = new FormControl({ value: '', readonly: true }, [Validators.required]);
   mCantidad = new FormControl('', [Validators.required]);
-  mNotas = new FormControl('', [Validators.required]);
+  mNotas = new FormControl('');
 
   busqueda = new FormControl('');
 
@@ -89,22 +90,106 @@ export class AddComponent implements OnInit {
 
   materiales: Array<MATERIALES> = [];
 
-  constructor(private edp: EndpointsService, private dialog: MatDialog) { }
-
+  constructor(private edp: EndpointsService, private dialog: MatDialog, private rutaActiva: ActivatedRoute) { }
+  public idReq: any = null;
   ngOnInit(): void {
+    this.idReq = this.rutaActiva.snapshot?.params.idReq;
+    console.log("id", this.idReq);
+    this.getRequisicion()
+    this.getMatsReq()
     this.getProys()
   }
 
   ngAfterViewInit() {
 
   }
+  
+  getMatsReq(){
+    if (this.idReq != undefined){
+      this.edp.getMaterialRequisicion(this.idReq).subscribe(
+        req => {
+          console.log("get req mats", req);
+          let parse: any = [];
+          req.forEach((el: any) => {
+            
+            parse.push({
+              id: el.Material.id,
+              mClave: el.Material.clave,
+              mDescripcion: el.Material.descripcion,
+              mUnidad: el.Material.unidad,
+              mCantidad: el.cantidad,
+              mNotas: el.notas,
+            })
+          })
+          this.allDataMATERIALES.data = this.materiales = parse;
+
+        },
+        notDoc => {
+          console.log(notDoc)
+        }
+      )
+    }
+  }
+
+  getRequisicion(){
+    if (this.idReq != undefined){
+      this.edp.getRequisicion(this.idReq).subscribe(
+        req => {
+          console.log("get req", req);
+
+          this.formReq.patchValue({
+            numero:req.numero,
+            solicitado_por:req.solicitado_por,
+            liquidacion:req.liquidacion,
+            proyecto_id:req.proyecto_id,
+            fecha_solicitud:req.fecha_solicitud,
+            fecha_requerida:req.fecha_requerida,
+            autorizado_por:req.autorizado_por,
+            lugar_entrega:req.lugar_entrega,
+            descripcion:req.descripcion,
+          })
+        },
+        notDoc => {
+          console.log(notDoc)
+        }
+      )
+    }
+    
+  }
 
   addReq() {
+    if (this.idReq == undefined){
+      if (this.formReq.valid) {
+        console.log("Create", this.formReq.value)
+        let dataREQ = this.formReq.value;
+        dataREQ.materiales = this.materiales
+        this.edp.createRequisicion(dataREQ).subscribe(
+          canDo => {
+            console.log("Echo", canDo)
+            this.idReq = canDo.value.id;
+
+          },
+          notDo => {
+            console.log(notDo)
+            
+          }
+        );
+      } else {
+        console.log(':-|', 'Invalid input values..!', this.formReq)
+
+      }
+    }else{
+      this.updateReq()
+    }
+    
+  }
+
+  updateReq(){
     if (this.formReq.valid) {
       console.log("Create", this.formReq.value)
       let dataREQ = this.formReq.value;
       dataREQ.materiales = this.materiales
-      this.edp.createRequisicion(dataREQ).subscribe(
+      this.edp.updateRequisicion(this.idReq,dataREQ).subscribe(
         canDo => {
           console.log("Echo", canDo)
 
@@ -113,13 +198,12 @@ export class AddComponent implements OnInit {
         notDo => {
           console.log(notDo)
         }
-      )
-
-
+      );
     } else {
       console.log(':-|', 'Invalid input values..!', this.formReq)
 
     }
+
   }
 
   getProys() {
@@ -186,8 +270,17 @@ export class AddComponent implements OnInit {
   addMaterial() {
     if (this.fgMaterial.valid) {
 
-      console.log("Agregar", this.fgMaterial.value);
-      this.materiales.push(this.fgMaterial.value);
+      let toFind = this.fgMaterial.value;
+      let flag = true;
+      this.materiales.filter((value,key)=>{
+        if (value.id == toFind.id){
+          console.log(this.materiales[key].mCantidad + value.mCantidad)
+          this.materiales[key].mCantidad = this.materiales[key].mCantidad + toFind.mCantidad;
+          flag = false;
+        }
+      });
+      console.log("1111",this.materiales)
+      if (flag) this.materiales.push(this.fgMaterial.value);
       this.allDataMATERIALES.data = this.materiales;
       console.log("On ADD",this.materiales);
       this.fgMaterial.reset()

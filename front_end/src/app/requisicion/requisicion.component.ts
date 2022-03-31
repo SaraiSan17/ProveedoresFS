@@ -29,7 +29,7 @@ export class RequisicionComponent implements OnInit {
   dialogTemplate!: TemplateRef<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  columnsToDisplay: string[] = ["proyecto","cliente","proveedor", "comentario","actions"];
+  columnsToDisplay: string[] = ["numero","proyecto","fecha_solicitud", "liquidacion","actions"];
   public REQUESICION_DATA: REQUESICION[] = [];
   allData = new MatTableDataSource<REQUESICION>(this.REQUESICION_DATA);
   public newDoc = {id : 0,comentario: "", proyecto: 0, cliente:0, formato: 0};
@@ -37,10 +37,10 @@ export class RequisicionComponent implements OnInit {
   fileToUpload:File =null;
   
   numero = new FormControl('', [ Validators.required]);
-  solicitado_por = new FormControl('', [ Validators.required]);
-  liquidacion = new FormControl('', [ Validators.required]);
   proyecto_id = new FormControl('', [ Validators.required]);
   fecha_solicitud = new FormControl('', [ Validators.required]);
+  liquidacion = new FormControl('', [ Validators.required]);
+  solicitado_por = new FormControl('', [ Validators.required]);
   fecha_requerida = new FormControl('', [ Validators.required]);
   autorizado_por = new FormControl('', [ Validators.required]);
   lugar_entrega = new FormControl('', [ Validators.required]);
@@ -108,25 +108,7 @@ export class RequisicionComponent implements OnInit {
     }
   }
 
-  updateDoc(){
-    delete this.reqToShow.createdAt;
-    delete this.reqToShow.updatedAt; 
-    console.log("sdf",this.reqToShow)
-    this.edp.updateRequisicion(this.reqToShow.id,{
-      proyecto_id:this.reqToShow.proyecto,
-      formato_id:this.reqToShow.formato,
-      cliente_id:this.reqToShow.cliente,
-      comentarios:this.reqToShow.comentario,
-    }).subscribe(
-      update => {
-        console.log("update",update)
-        this.listReqs();
-      },
-      notUpdate => {
-        console.log(notUpdate);
-      }
-    )
-  }
+  
 
   delete(row_obj:any){
     this.REQUESICION_DATA = this.REQUESICION_DATA.filter((value,key)=>{
@@ -160,18 +142,6 @@ export class RequisicionComponent implements OnInit {
 
   open(config?: MatDialogConfig) {
     return this.dialog.open(this.dialogTemplate, config );
-  }
-
-  afterC(tipo: String){
-    switch(tipo){
-      case 'no':
-        this.reqToShow = {id : 0,ot: "", proyecto: 0, cliente:0, proveedor: 0};
-        break;
-      case 'yes':
-        this.updateDoc();
-        break;
-      
-    }
   }
 
   getInfo(type: string, id:number){

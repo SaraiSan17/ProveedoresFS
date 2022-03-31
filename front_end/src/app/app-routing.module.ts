@@ -56,6 +56,7 @@ const routes: Routes = [
     children: [ 
       { path: '', component: RequisicionComponent, canActivate: [AuthGuard] },
       { path: 'agregar', component: AddComponent, canActivate: [AuthGuard] },
+      { path: ':idReq', component: AddComponent, canActivate: [AuthGuard] },
     ]
   }
 ]

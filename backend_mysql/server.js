@@ -17,6 +17,7 @@ app.use('/asignacion',  require('./controladores/asignacion.controller'));
 app.use('/formato',  require('./controladores/formato.controller'));
 app.use('/documento',  require('./controladores/documento.controller'));
 app.use('/requisicion',  require('./controladores/requisicion.controller'));
+app.use('/mats',  require('./controladores/req_mat.controller'));
 
 // global error handler
 app.use(errorHandler);
