@@ -1,4 +1,5 @@
 const config = require('config.json');
+const bcrypt = require('bcryptjs');
 const mysql = require('mysql2/promise');
 const { Sequelize } = require('sequelize');
 
@@ -48,15 +49,16 @@ async function initAdmin(){
     admin = await db.User.findAll({where: {rol_id: 1}});
     if(admin.length == 0){
         // user
-        await db.User.create({
+        const ss = await db.User.create({
             rfc: "XXXX010101XXX",
             razon_social: "Admin",
             sucursal: "CENTRO",
             password: await bcrypt.hash('11111111', 10),
             direccion: "Conocida",
-            id_rol: 1
+            rol_id: 1
 
-        });
+        }).then(fine => {console.log(fine)})
+        .catch(Error => console.log(Error));
     }else {
         console.log("have Admin")
     }
