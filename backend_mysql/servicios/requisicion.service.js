@@ -7,6 +7,7 @@ module.exports = {
     getById,
     create,
     update,
+    atach,
     delete: _delete
 };
 
@@ -50,6 +51,14 @@ async function update(id, params) {
     Object.assign(Requisicion, params);
     await Requisicion.save();
 
+    return Requisicion.get();
+}
+
+async function atach(id,idP){
+    const Requisicion = await getRequisicion(id);
+    console.log("IDPROVEEDORE",idP)
+    Object.assign(Requisicion, {proveedor_id: idP});
+    await Requisicion.save();
     return Requisicion.get();
 }
 

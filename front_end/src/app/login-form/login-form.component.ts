@@ -37,7 +37,7 @@ export class LoginFormComponent  {
         .catch(notDo => {
           console.log("Error login ",notDo);
           this.haveGblMessage = true;
-          //this.gblMessage = notDo.error.message
+          this.gblMessage = notDo.error.message
         })
       //this.submitEM.emit(this.form.value);
       /*this.edp.login(this.form.value).subscribe(

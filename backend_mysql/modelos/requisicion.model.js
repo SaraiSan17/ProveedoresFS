@@ -20,6 +20,7 @@ function model(sequelize) {
         autorizado_por: { type: DataTypes.STRING, allowNull: false },
         lugar_entrega: { type: DataTypes.STRING, allowNull: false },
         descripcion: { type: DataTypes.STRING, allowNull: false },
+        proveedor_id: { type: DataTypes.INTEGER, allowNull: true },
         createdAt: DataTypes.DATE,
         updatedAt: DataTypes.DATE
     };

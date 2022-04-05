@@ -256,6 +256,12 @@ export class EndpointsService {
     const url = `${this.urlBaseRequisicion}/${id}`;
     return this.apiClient.put(url,params, this.httpOptions)
   }
+
+  attachProveedor(id: any, idProv: any){
+    const params = JSON.stringify({proveedor_id: idProv});
+    const url = `${this.urlBaseRequisicion}/attach/${id}`;
+    return this.apiClient.put(url,params, this.httpOptions)
+  }
   //termina endpoints para Requisicion
 
     //inicia endpoitns para formato
@@ -282,7 +288,9 @@ export class EndpointsService {
       const url = `${this.urlBaseFactura}/${id}`;
       return this.apiClient.put(url,params, this.httpOptions)
     }
-    //termina endpoints para formato
+
+    
+    //termina endpoints para factura
 
 
 }

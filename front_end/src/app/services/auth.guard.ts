@@ -22,19 +22,21 @@ export class AuthGuard implements CanActivate {
     console.log("On guard", this.Auth.user)
     let inRoute = false;
     if (this.Auth.isLoggedIn$) {
-      if (this.Auth.user.Rol.rol == "ADMIN") {
+      console.log("ROL", this.Auth.user?.Rol.rol)
+      if (this.Auth.user?.Rol.rol == "ADMIN") {
+        console.log("IS ADMIN")
         inRoute = true;
       } else {
         let from = this.routes.routerState.snapshot.url;
         console.log("from", from)
         this.routes.events.subscribe((event: Event) => {
 
-          if (event instanceof NavigationEnd) {
+          if (this.Auth.user?.Rol.rol != "ADMIN" && event instanceof NavigationEnd) {
             console.log(event.url)
             console.log(event);
 
 
-            if (this.urlPermisions.PROVEEDOR.includes(event.url)) {
+            if ( this.urlPermisions.PROVEEDOR.includes(event.url)) {
               inRoute = true;
             } else {
               inRoute = false

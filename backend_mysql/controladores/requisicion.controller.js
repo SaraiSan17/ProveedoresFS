@@ -10,6 +10,7 @@ const reqMatService = require('../servicios/req_mat.service');
 router.post('/register', authorize(), registerSchema, register);
 router.get('/', authorize(), getAll);
 router.get('/:id', authorize(), getById);
+router.put('/attach/:id', authorize(), atach);
 router.put('/:id', authorize(), updateSchema, update);
 router.delete('/:id', authorize(), _delete);
 
@@ -108,6 +109,12 @@ function update(req, res, next) {
             })
             res.json({ message: 'Registro exitoso' })
         })
+        .catch(next);
+}
+
+function atach(req, res, next){
+    requisicionService.atach(req.params.id,req.body.proveedor_id)
+        .then(() => res.json({ message: 'requisicion Actualizada' }))
         .catch(next);
 }
 

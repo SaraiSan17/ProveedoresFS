@@ -29,77 +29,90 @@ export class RequisicionComponent implements OnInit {
   dialogTemplate!: TemplateRef<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  columnsToDisplay: string[] = ["numero","proyecto","fecha_solicitud", "liquidacion","actions"];
+  columnsToDisplay: string[] = ["numero", "proyecto", "fecha_solicitud", "liquidacion", "proveedor", "actions"];
   public REQUESICION_DATA: REQUESICION[] = [];
   allData = new MatTableDataSource<REQUESICION>(this.REQUESICION_DATA);
-  public newDoc = {id : 0,comentario: "", proyecto: 0, cliente:0, formato: 0};
-  fileName:any = null;
-  fileToUpload:File =null;
-  
-  numero = new FormControl('', [ Validators.required]);
-  proyecto_id = new FormControl('', [ Validators.required]);
-  fecha_solicitud = new FormControl('', [ Validators.required]);
-  liquidacion = new FormControl('', [ Validators.required]);
-  solicitado_por = new FormControl('', [ Validators.required]);
-  fecha_requerida = new FormControl('', [ Validators.required]);
-  autorizado_por = new FormControl('', [ Validators.required]);
-  lugar_entrega = new FormControl('', [ Validators.required]);
-  descripcion = new FormControl('', [ Validators.required]);
+  public newDoc = { id: 0, comentario: "", proyecto: 0, cliente: 0, formato: 0 };
+  fileName: any = null;
+  fileToUpload: File = null;
 
-  reqToShow:any = this.newDoc;
+  numero = new FormControl('', [Validators.required]);
+  proyecto_id = new FormControl('', [Validators.required]);
+  fecha_solicitud = new FormControl('', [Validators.required]);
+  liquidacion = new FormControl('', [Validators.required]);
+  solicitado_por = new FormControl('', [Validators.required]);
+  fecha_requerida = new FormControl('', [Validators.required]);
+  autorizado_por = new FormControl('', [Validators.required]);
+  lugar_entrega = new FormControl('', [Validators.required]);
+  descripcion = new FormControl('', [Validators.required]);
+
+  proveedor = new FormControl("");
+
+  provSelected: any = null;
+
+  reqToShow: any = this.newDoc;
 
   proys: any = [];
   clients: any = [];
+  proveedors: any = [];
   forms: any = [];
 
 
-  constructor(private edp: EndpointsService,  private dialog: MatDialog) { }
+  constructor(private edp: EndpointsService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.listReqs();
     this.getProys();
     this.getClients();
     this.getFormatos();
+    this.getProveedores();
   }
 
   ngAfterViewInit() {
     this.allData.paginator = this.paginator;
   }
 
-  listReqs(){
+  listReqs() {
     this.REQUESICION_DATA = []
     this.edp.listRequisicion().subscribe(
       doLP => {
         this.REQUESICION_DATA = doLP
-        
+
         this.allData.data = this.REQUESICION_DATA;
       },
       notDoLP => console.log(notDoLP)
     )
   }
 
-  getProys(){
+  getProys() {
     this.edp.listProyectos().subscribe(
       proys => this.proys = proys,
-      notProys => console.log("Error proys",notProys)
+      notProys => console.log("Error proys", notProys)
     )
   }
 
-  getClients(){
+  getClients() {
     this.edp.listClientes().subscribe(
       clients => this.clients = clients,
-      notClients => console.log("Error clients",notClients)
+      notClients => console.log("Error clients", notClients)
     )
   }
 
-  getFormatos(){
+  getProveedores() {
+    this.edp.listProveedor().subscribe(
+      proveedors => this.proveedors = proveedors,
+      notClients => console.log("Error proveedors", notClients)
+    )
+  }
+
+  getFormatos() {
     this.edp.listFormato().subscribe(
       forms => this.forms = forms,
-      notProvs => console.log("Error forms",notProvs)
+      notProvs => console.log("Error forms", notProvs)
     )
   }
 
-  onFileSelected(event:any) {
+  onFileSelected(event: any) {
     console.log(event)
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
@@ -108,26 +121,26 @@ export class RequisicionComponent implements OnInit {
     }
   }
 
-  
 
-  delete(row_obj:any){
-    this.REQUESICION_DATA = this.REQUESICION_DATA.filter((value,key)=>{
+
+  delete(row_obj: any) {
+    this.REQUESICION_DATA = this.REQUESICION_DATA.filter((value, key) => {
       return value.id != row_obj.id;
     });
     this.allData.data = this.REQUESICION_DATA;//refresh tabla
   }
 
-  openDialog(row_obj:any): void {
-    console.log("Opendialog",row_obj)
-    
+  openDialog(row_obj: any): void {
+    console.log("Opendialog", row_obj)
+
     this.edp.getRequisicion(row_obj.id).subscribe(
       req => {
         this.reqToShow.id = req.id;
         this.reqToShow.proyecto = req.proyecto_id;
         this.reqToShow.formato = req.formato_id;
         this.reqToShow.cliente = req.cliente_id;
-        this.reqToShow.comentario = req.comentarios ;
-        console.log(12,this.reqToShow)
+        this.reqToShow.comentario = req.comentarios;
+        console.log(12, this.reqToShow)
         this.open({
           width: '400px',
           hasBackdrop: true,
@@ -141,53 +154,89 @@ export class RequisicionComponent implements OnInit {
   }
 
   open(config?: MatDialogConfig) {
-    return this.dialog.open(this.dialogTemplate, config );
+    return this.dialog.open(this.dialogTemplate, config);
   }
 
-  showProveedores(requisicion: any){
-    console.log(requisicion);
+
+  afterC(tipo: String) {
+    switch (tipo) {
+      case 'no':
+        //this.docToShow = {id : 0,ot: "", proyecto: 0, cliente:0, proveedor: 0};
+        break;
+      case 'yes':
+        this.attachProv();
+        break;
+
+    }
   }
 
-  getInfo(type: string, id:number){
+  attachProv() {
+    console.log(this.provSelected)
+    this.edp.attachProveedor(this.reqToShow.id ,this.provSelected).subscribe(
+      doing => {
+        this.listReqs()
+        console.log(doing)
+      },
+      not => console.log(not)
+    )
+  }
+
+  getInfo(type: string, id: number) {
     let info = "Información no encontrado";
     switch (type) {
       case "p":
-        if(this.proys.length > 0){
-          let data = this.proys.filter((v:any) =>{
+        if (this.proys.length > 0) {
+          let data = this.proys.filter((v: any) => {
             return v.id == id;
           })
           info = data[0].clave;
-        }else {
+        } else {
           info = "Cargando información"
         }
-        
+
         break;
       case "c":
-        if(this.clients.length > 0){
-          let data = this.clients.filter((v:any) =>{
+        if (this.clients.length > 0) {
+          let data = this.clients.filter((v: any) => {
             return v.id == id;
           })
           info = data[0].razon_social;
-        }else {
+        } else {
           info = "Cargando información"
         }
         break;
       case "f":
-        if(this.forms.length > 0){
-          let data = this.forms.filter((v:any) =>{
+        if (this.forms.length > 0) {
+          let data = this.forms.filter((v: any) => {
             return v.id == id;
           })
           info = data[0].nombre;
-        }else {
+        } else {
           info = "Cargando información"
         }
+        break;
+      case "pp":
+        if (this.proveedors.length > 0) {
+          let data = this.proveedors.filter((v: any) => {
+            return v.id == id;
+          })
+          if (data.length > 0) {
+
+            info = data[0].razon_social;
+          } else {
+            info = "Pendiente de asignar"
+          }
+        } else {
+          info = "Cargando información"
+        }
+
         break;
     }
     return info;
   }
 
-  getErrorMessage(input: String){
-    let info =""
+  getErrorMessage(input: String) {
+    let info = ""
     switch (input) {
       case 'numero':
         if (this.numero.hasError('required')) {
