@@ -70,8 +70,17 @@
         <div mat-card-avatar class="example-header-image"></div>
       </span>
       <span>
-        {{ username }}
+        {{ user.razon_social }}
       </span>
+      <span>
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="logout()">Cerrar session</button>
+        </mat-menu>
+      </span>
+      
     </mat-toolbar>
     <!-- Add Content Here -->
     <router-outlet>

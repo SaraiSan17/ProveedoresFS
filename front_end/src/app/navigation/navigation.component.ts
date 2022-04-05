@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Router, NavigationEnd } from '@angular/router';
 import { EndpointsService } from '../services/endpoints.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-navigation',
@@ -15,22 +16,26 @@ export class NavigationComponent implements OnInit {
   navHide = false;
   iconMenu = 'chevron_right';
   panelOpenState = false;
-  username: string;
+  user: any;
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
       shareReplay()
     );
-
-  constructor(private breakpointObserver: BreakpointObserver, private router: Router,
-    private edp: EndpointsService) { }
+  
+  authState :any;
+  constructor(private breakpointObserver: BreakpointObserver,
+    private Auth: AuthService) { 
+      this.Auth.auth$.subscribe(U => this.authState = U)
+    }
 
   ngOnInit(): void {
-    this.edp.currentUser().subscribe(
-      user => {
-        this.username = user.razon_social;
-      }
-    )
+    this.Auth.UserInfo();
+    this.user = this.authState.user;
+  }
+
+  logout(){
+    this.Auth.logOut()
   }
 
 }

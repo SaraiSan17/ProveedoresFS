@@ -144,6 +144,10 @@ export class RequisicionComponent implements OnInit {
     return this.dialog.open(this.dialogTemplate, config );
   }
 
+  showProveedores(requisicion: any){
+    console.log(requisicion);
+  }
+
   getInfo(type: string, id:number){
     let info = "Información no encontrado";
     switch (type) {

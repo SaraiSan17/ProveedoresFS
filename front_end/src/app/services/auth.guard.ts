@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
 import { EndpointsService } from './endpoints.service';
 
 @Injectable({
@@ -13,25 +14,13 @@ export class AuthGuard implements CanActivate {
     PROVEEDOR: ['']
   }
 
-  constructor( private routes: Router, private edp: EndpointsService){}
+  constructor( private routes: Router, private Auth: AuthService){}
+
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
-      if (localStorage.getItem('session') != null) {
-        this.edp.currentUser().subscribe(
-          current => {
-            if (current.Rol.rol = 'Admin'){
-              console.log('Is Admin', state.url);
-            }else{
-              console.log('Is Proveedor', state.url);
-            }
-          },
-          expireSession => {
-            this.routes.navigate(['/']);
-            return false
-            
-          }
-        )
+      console.log("On guard",this.Auth.user)
+      if (this.Auth.isLoggedIn$) {
         return true;
       } else {
         this.routes.navigate(['/']);

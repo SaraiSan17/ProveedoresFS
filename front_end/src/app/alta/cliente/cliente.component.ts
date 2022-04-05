@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { AuthService } from 'src/app/services/auth.service';
 import { EndpointsService } from 'src/app/services/endpoints.service';
 
 export interface CLIENT {
@@ -41,7 +42,7 @@ export class ClienteComponent implements OnInit {
 
   
 
-  constructor(private edp: EndpointsService, private dialog: MatDialog) { }
+  constructor(private edp: EndpointsService, private dialog: MatDialog, private Auth: AuthService) { }
 
   ngOnInit(): void {
     this.listCliente()

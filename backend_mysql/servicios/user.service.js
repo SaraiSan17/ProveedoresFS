@@ -14,10 +14,9 @@ module.exports = {
 
 async function authenticate({ rfc, password }) {
     const user = await db.User.scope('withHash').findOne({ where: { rfc } ,include: db.Rol});
-    console.log("---here---")
+
     if (!user || !(await bcrypt.compare(password, user.password)))
-        throw 'User with rfc or password is incorrect';
-    console.log("---hereauthentication successful---")
+        throw 'El proveedor con rfc es incorrecto o ingreso mal la contraseña';
 
     const token = jwt.sign({ sub: user.id }, config.secret, { expiresIn: '1d' });
     return { ...omitHash(user.get()), token };

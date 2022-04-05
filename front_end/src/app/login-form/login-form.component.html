@@ -1,10 +1,13 @@
 <mat-card>
-  <mat-card-content>
+  <mat-card-content class="width-login">
     <form [formGroup]="form" (ngSubmit)="submit()">
       <p class="center-text">
         <img src="/assets/images/logo.png" alt="logo" height="200em" width="auto">
       </p>
-      <h2 *ngIf="haveGblMessage">{{ gblMessage }}</h2>
+      <mat-chip-list *ngIf="haveGblMessage" aria-label="Fish selection">
+        <mat-chip color="warn">{{ gblMessage }}</mat-chip>
+      </mat-chip-list>
+
       <p>
         <mat-form-field>
           <input type="text" matInput placeholder="RFC" formControlName="rfc">

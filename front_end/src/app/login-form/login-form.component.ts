@@ -1,6 +1,7 @@
 import { Input, Component, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router,NavigationEnd  } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 import { EndpointsService } from '../services/endpoints.service';
 
 @Component({
@@ -16,8 +17,7 @@ export class LoginFormComponent  {
 
   haveGblMessage = false;
   gblMessage = "";
-  constructor(private router: Router,
-              private edp: EndpointsService) { }
+  constructor(private Auth: AuthService, private routes: Router) { }
   
   form: FormGroup = new FormGroup({
     rfc: this.rfc,
@@ -28,8 +28,19 @@ export class LoginFormComponent  {
 
   submit() {
     if (this.form.valid) {
+      console.log(this.form.value);
+      this.Auth.logIn(this.form.get('rfc').value, this.form.get('password').value)
+        .then(sucess => {
+          console.log("AAA",sucess)
+          this.routes.navigate(['/','home']);
+        })
+        .catch(notDo => {
+          console.log("Error login ",notDo);
+          this.haveGblMessage = true;
+          //this.gblMessage = notDo.error.message
+        })
       //this.submitEM.emit(this.form.value);
-      this.edp.login(this.form.value).subscribe(
+      /*this.edp.login(this.form.value).subscribe(
         canDo => {
           console.log("canDo login",canDo);
           localStorage.setItem('session', canDo.token)
@@ -40,7 +51,7 @@ export class LoginFormComponent  {
           this.haveGblMessage = true;
           this.gblMessage = notDo.error.message
         }
-      )
+      )*/
       // this.router.navigate(['/', 'home']);
     }else {
       console.log("Error", this.form)
