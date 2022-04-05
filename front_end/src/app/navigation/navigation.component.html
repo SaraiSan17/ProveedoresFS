@@ -9,25 +9,25 @@
     <mat-nav-list>
       <a mat-list-item routerLink="/home" routerLinkActive="active">Home</a>
       <mat-accordion>
-        <mat-expansion-panel class="matepb">
+        <mat-expansion-panel *ngIf="user.Rol.rol == 'ADMIN'" class="matepb">
           <mat-expansion-panel-header>
             <mat-panel-title>
               Alta
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <a class="submenu" mat-list-item routerLink="/alta/cliente" routerLinkActive="active">Clientes</a>
-          <a mat-list-item routerLink="/alta/proyecto" routerLinkActive="active">Proyecto</a>
-          <a mat-list-item routerLink="/alta/proveedor" routerLinkActive="active">Proveedor</a>
+          <a *ngIf="user.Rol.rol == 'ADMIN'" class="submenu" mat-list-item routerLink="/alta/cliente" routerLinkActive="active">Clientes</a>
+          <a *ngIf="user.Rol.rol == 'ADMIN'" mat-list-item routerLink="/alta/proyecto" routerLinkActive="active">Proyecto</a>
+          <a *ngIf="user.Rol.rol == 'ADMIN'" mat-list-item routerLink="/alta/proveedor" routerLinkActive="active">Proveedor</a>
         </mat-expansion-panel>
 
-        <mat-expansion-panel >
+        <mat-expansion-panel *ngIf="user.Rol.rol == 'ADMIN'">
           <mat-expansion-panel-header>
             <mat-panel-title>
               OT
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <a mat-list-item routerLink="/ot/material" routerLinkActive="active">Alta Material</a>
-          <a mat-list-item routerLink="/ot/asignacion" routerLinkActive="active">Asignación</a>
+          <a *ngIf="user.Rol.rol == 'ADMIN'" mat-list-item routerLink="/ot/material" routerLinkActive="active">Alta Material</a>
+          <a *ngIf="user.Rol.rol == 'ADMIN'" mat-list-item routerLink="/ot/asignacion" routerLinkActive="active">Asignación</a>
         </mat-expansion-panel>
 
         <mat-expansion-panel >
@@ -36,14 +36,14 @@
               Facturación
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <a mat-list-item routerLink="/facturacion/agregar" routerLinkActive="active">Agregar Factura</a>
+          <a *ngIf="user.Rol.rol == 'ADMIN'" mat-list-item routerLink="/facturacion/agregar" routerLinkActive="active">Agregar Factura</a>
           <a mat-list-item routerLink="/facturacion" routerLinkActive="active">Consultar Facturas</a>
           <!-- <a mat-list-item routerLink="/facturacion/estatus" routerLinkActive="active">Estatus Facturas</a> -->
         </mat-expansion-panel>
 
-        <a mat-list-item routerLink="/doc" routerLinkActive="active">Documentación</a>
+        <a *ngIf="user.Rol.rol == 'ADMIN'" mat-list-item routerLink="/doc" routerLinkActive="active">Documentación</a>
 
-        <a mat-list-item routerLink="/requisicion" routerLinkActive="active">Requisicion</a>
+        <a *ngIf="user.Rol.rol == 'ADMIN'" mat-list-item routerLink="/requisicion" routerLinkActive="active">Requisicion</a>
       </mat-accordion>
 
 
